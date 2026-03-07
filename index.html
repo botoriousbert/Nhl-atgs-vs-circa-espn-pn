@@ -239,7 +239,12 @@ body {
 .today-scroll::-webkit-scrollbar { width:3px; }
 .today-scroll::-webkit-scrollbar-thumb { background:var(--s3); }
 
-table.plays { width:100%; border-collapse:collapse; }
+table.plays { width:100%; border-collapse:collapse; table-layout:fixed; }
+table.plays col.col-player { width:38%; }
+table.plays col.col-book   { width:22%; }
+table.plays col.col-odds   { width:18%; }
+table.plays col.col-fv     { width:12%; }
+table.plays col.col-ev     { width:10%; }
 table.plays thead th {
   font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--dim);
   letter-spacing:1.2px; text-transform:uppercase; text-align:left;
@@ -426,8 +431,79 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
 /* ═══════════════════════════════
    RESPONSIVE BREAKPOINTS
 ═══════════════════════════════ */
+
+/* TABLET PORTRAIT (641px–900px) */
+@media (min-width: 641px) and (max-width: 900px) {
+  /* Topbar */
+  .topbar { padding:0 16px; gap:10px; height:60px; }
+  .brand-icon { width:34px; height:34px; font-size:16px; }
+  .brand-name { font-size:1.1rem; }
+  .brand-sub { display:none; }
+  .topbar-right { display:none; }
+  .ts-chip { padding:5px 10px; }
+  .ts-chip .lbl { display:none; }
+  .ts-chip .val { font-size:0.92rem; margin-top:0; }
+
+  /* Daily: Today + Parlays top row, Yesterday full width bottom */
+  .daily-layout {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height:100%;
+  }
+  #paneToday   { grid-column:1; grid-row:1; }
+  #paneParlays { grid-column:2; grid-row:1; }
+  #paneYest    { grid-column:1 / span 2; grid-row:2; }
+
+  /* Yesterday in full-width: switch to horizontal summary + side-by-side layout */
+  #paneYest .yest-summary {
+    grid-template-columns: repeat(5, 1fr);
+    padding:12px 20px 10px;
+  }
+  #paneYest .win-bar { grid-column: 1 / -1; }
+  #paneYest .yest-scroll {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    align-content:start;
+    overflow-y:auto;
+  }
+  .result-row { border-right:1px solid var(--b2); }
+
+  /* Tighten table for smaller panes */
+  table.plays td { padding:10px 10px; }
+  table.plays thead th { padding:8px 10px; font-size:0.58rem; }
+  .player { font-size:0.88rem; }
+  .odds-num { font-size:0.88rem; }
+  .col-fv { display:none; }
+
+  /* Parlay cards horizontal scroll */
+  .parlay-scroll { overflow-y:auto; }
+
+  /* Summary page */
+  .monthly-grid { grid-template-columns:1fr 1fr; }
+  .players-grid { grid-template-columns:1fr 1fr; }
+}
+
+/* TABLET LANDSCAPE (901px–1100px) */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .topbar { padding:0 20px; gap:14px; }
+  .brand-sub { display:none; }
+  .topbar-right { display:none; }
+  .ts-chip { padding:6px 12px; }
+
+  /* Full 3-col but tighten content */
+  .daily-layout { grid-template-columns:1fr 1fr 1fr; }
+  table.plays td { padding:10px 10px; }
+  .col-fv { display:none; }
+  .player { font-size:0.88rem; }
+  .odds-num { font-size:0.88rem; }
+  .result-info { padding:9px 10px; }
+  .result-pl { padding:0 10px 0 4px; }
+
+  .monthly-grid { grid-template-columns:1fr 1fr; }
+  .players-grid { grid-template-columns:1fr 1fr; }
+}
+
 @media (max-width: 768px) {
-  /* Monthly: keep 2 col but shrink */
   .monthly-grid { grid-template-columns:1fr 1fr; }
   .players-grid { grid-template-columns:1fr; }
 }
@@ -553,6 +629,13 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
         </div>
         <div class="today-scroll">
           <table class="plays">
+            <colgroup>
+              <col class="col-player">
+              <col class="col-book">
+              <col class="col-odds">
+              <col class="col-fv">
+              <col class="col-ev">
+            </colgroup>
             <thead><tr><th>Player</th><th>Book</th><th>Odds</th><th class="col-fv">FV</th><th>EV %</th></tr></thead>
             <tbody id="todayBody"></tbody>
           </table>
