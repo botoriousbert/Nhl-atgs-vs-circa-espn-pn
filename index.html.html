@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>ATGS — NHL</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+:root {
+  --bg:       #f5f6fa;
+  --white:    #ffffff;
+  --s2:       #f0f1f5;
+  --s3:       #e4e6ee;
+  --border:   #e2e4ec;
+  --b2:       #f0f1f6;
+  --text:     #111827;
+  --mid:      #6b7280;
+  --dim:      #9ca3af;
+  --navy:     #1e3a5f;
+  --blue:     #2563eb;
+  --blue-lt:  #eff4ff;
+  --blue-bd:  #c7d8fd;
+  --green:    #16a34a;
+  --green-lt: #f0fdf4;
+  --green-bd: #bbf7d0;
+  --red:      #dc2626;
+  --red-lt:   #fff1f2;
+  --red-bd:   #fecdd3;
+  --amber:    #d97706;
+  --amber-lt: #fffbeb;
+  --amber-bd: #fde68a;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body { height:100%; overflow:hidden; }
+body {
+  font-family:'Syne',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ═══════════════════════════════
+   TOP BAR
+═══════════════════════════════ */
+.topbar {
+  flex-shrink:0;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px;
+  padding-top:env(safe-area-inset-top, 0px);
+  height:calc(72px + env(safe-area-inset-top, 0px));
+  background:var(--navy);
+  gap:20px;
+  z-index:20;
+}
+.brand { display:flex; align-items:center; gap:13px; }
+.brand-icon { width:42px; height:42px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.brand-name { font-weight:800; font-size:1.4rem; letter-spacing:1.5px; color:#fff; }
+.brand-sub  { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:rgba(255,255,255,0.4); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+
+.topbar-stats { display:flex; align-items:center; gap:10px; }
+.ts-chip { display:flex; flex-direction:column; align-items:center; padding:8px 18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:10px; }
+.ts-chip .lbl { font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:rgba(255,255,255,0.4); letter-spacing:1.5px; text-transform:uppercase; }
+.ts-chip .val { font-weight:700; font-size:1.15rem; color:#fff; line-height:1.25; margin-top:1px; }
+.ts-chip .val.up  { color:#4ade80; }
+.ts-chip .val.cy  { color:#67e8f9; }
+.ts-chip .val.amb { color:#fbbf24; }
+
+.topbar-right { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.date-pill { font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:rgba(255,255,255,0.7); background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); padding:7px 16px; border-radius:20px; letter-spacing:1px; }
+
+.live-dot { display:flex; align-items:center; gap:7px; font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#4ade80; letter-spacing:1.5px; flex-shrink:0; }
+.live-dot::before { content:''; width:7px; height:7px; background:#4ade80; border-radius:50%; box-shadow:0 0 8px #4ade80; animation:blink 1.8s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ═══════════════════════════════
+   TICKER
+═══════════════════════════════ */
+.ticker-wrap { flex-shrink:0; background:var(--navy); height:26px; overflow:hidden; display:flex; align-items:center; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid var(--border); }
+.ticker-inner { display:inline-flex; align-items:center; gap:40px; white-space:nowrap; animation:scroll 50s linear infinite; font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:rgba(255,255,255,0.3); padding-left:100%; }
+.ticker-inner .hi  { color:#67e8f9; }
+.ticker-inner .win { color:#4ade80; }
+@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ═══════════════════════════════
+   TABS (desktop top / mobile bottom)
+═══════════════════════════════ */
+.tab-bar {
+  flex-shrink:0;
+  display:flex; align-items:stretch;
+  background:var(--navy);
+  border-bottom:1px solid var(--border);
+  padding:0 28px;
+}
+.tab-btn {
+  font-family:'Syne',sans-serif; font-weight:600; font-size:0.85rem;
+  padding:11px 22px; border:none; background:transparent; color:rgba(255,255,255,0.45);
+  cursor:pointer; letter-spacing:0.5px; border-bottom:2px solid transparent;
+  transition:all 0.15s; display:flex; align-items:center; gap:7px;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab-btn.active { color:#fff; border-bottom-color:#67e8f9; }
+
+/* ═══════════════════════════════
+   CONTENT AREA
+═══════════════════════════════ */
+.content-area {
+  flex:1;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+.page { display:none; flex:1; flex-direction:column; min-height:0; overflow:hidden; }
+.page.active { display:flex; }
+
+/* ═══════════════════════════════
+   PAGE 1 — DAILY (desktop: 2 col, mobile: stacked with sub-tabs)
+═══════════════════════════════ */
+.daily-layout {
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:1px;
+  background:var(--border);
+  min-height:0;
+  overflow:hidden;
+}
+
+/* PARLAY PANE */
+.parlay-scroll { flex:1; overflow-y:auto; background:var(--white); -webkit-overflow-scrolling:touch; }
+.parlay-scroll::-webkit-scrollbar { width:3px; }
+.parlay-scroll::-webkit-scrollbar-thumb { background:var(--s3); }
+
+.parlay-card {
+  margin:10px 12px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+
+.parlay-card-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 12px 7px;
+  background:var(--s2);
+  border-bottom:1px solid var(--border);
+  gap:8px;
+}
+
+.parlay-odds {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.95rem; font-weight:800; color:var(--navy);
+}
+
+.parlay-boost {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.65rem; font-weight:700;
+  padding:2px 8px; border-radius:5px;
+  background:#f5f0ff; border:1px solid #d8b4fe; color:#7c3aed;
+  white-space:nowrap;
+}
+
+.parlay-matchup {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.56rem; color:var(--dim);
+  letter-spacing:0.5px;
+}
+
+.parlay-leg {
+  display:grid;
+  grid-template-columns:18px 1fr auto;
+  align-items:center;
+  gap:8px;
+  padding:7px 12px;
+  border-bottom:1px solid var(--b2);
+}
+.parlay-leg:last-child { border-bottom:none; }
+
+.parlay-leg-num {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.58rem; font-weight:700;
+  color:var(--dim); text-align:center;
+  width:18px; height:18px;
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+
+.parlay-leg-info { display:flex; flex-direction:column; gap:1px; }
+.parlay-leg-player { font-weight:700; font-size:0.84rem; color:var(--navy); }
+.parlay-leg-prop {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.56rem; color:var(--mid); letter-spacing:0.3px;
+}
+
+/* Mobile sub-tabs: hidden on desktop, shown only on mobile via media query */
+.sub-tab-bar {
+  display:none;
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sub-tab-btn {
+  flex:1; padding:12px 8px; border:none; background:transparent;
+  font-family:'Syne',sans-serif; font-weight:600; font-size:0.85rem;
+  color:var(--mid); cursor:pointer; border-bottom:2px solid transparent;
+  transition:all 0.15s; display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.sub-tab-btn.active { color:var(--navy); border-bottom-color:var(--blue); }
+
+.pane { background:var(--bg); display:flex; flex-direction:column; overflow:hidden; min-height:0; }
+
+/* Mobile: hide inactive pane */
+.pane.mobile-hidden { display:none; }
+
+.pane-head {
+  padding:9px 14px 8px; background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.pane-title { display:flex; align-items:center; gap:10px; }
+.pane-title h2 { font-size:1rem; font-weight:700; color:var(--navy); }
+.badge { font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--mid); background:var(--s2); border:1px solid var(--border); padding:3px 8px; border-radius:4px; letter-spacing:1px; }
+.icon-wrap { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+.icon-wrap.blue  { background:var(--blue-lt); border:1px solid var(--blue-bd); }
+.icon-wrap.green { background:var(--green-lt); border:1px solid var(--green-bd); }
+
+/* TODAY TABLE */
+.today-scroll { flex:1; overflow-y:auto; background:var(--white); -webkit-overflow-scrolling:touch; }
+.today-scroll::-webkit-scrollbar { width:3px; }
+.today-scroll::-webkit-scrollbar-thumb { background:var(--s3); }
+
+table.plays { width:100%; border-collapse:collapse; table-layout:fixed; }
+table.plays col.col-player { width:38%; }
+table.plays col.col-book   { width:22%; }
+table.plays col.col-odds   { width:18%; }
+table.plays col.col-fv     { width:12%; }
+table.plays col.col-ev     { width:10%; }
+table.plays thead th {
+  font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--dim);
+  letter-spacing:1.2px; text-transform:uppercase; text-align:left;
+  padding:7px 14px 6px; background:var(--s2); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:2;
+}
+table.plays tbody tr { border-bottom:1px solid var(--b2); transition:background 0.1s; animation:fadeUp 0.22s ease both; }
+table.plays tbody tr:active { background:var(--blue-lt); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+table.plays td { padding:9px 14px; vertical-align:middle; }
+
+.player   { font-weight:700; font-size:0.9rem; color:var(--navy); }
+.book-chip { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:0.6rem; padding:2px 7px; border-radius:5px; background:var(--blue-lt); border:1px solid var(--blue-bd); color:var(--blue); white-space:nowrap; }
+.odds-num { font-family:'JetBrains Mono',monospace; font-size:0.9rem; font-weight:700; color:var(--amber); }
+.fv-num   { font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--dim); }
+.ev-chip  { display:inline-flex; align-items:center; font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--green); background:var(--green-lt); border:1px solid var(--green-bd); padding:2px 7px; border-radius:5px; white-space:nowrap; font-weight:500; }
+
+/* Hide FV column on small screens */
+.col-fv { }
+
+/* DISCORD */
+.discord-btn { display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:0.68rem; padding:8px 14px; border-radius:7px; border:1px solid #c7d2f8; background:#eef2ff; color:#4f46e5; cursor:pointer; transition:all 0.15s; font-weight:500; white-space:nowrap; }
+.discord-btn:active { background:#e0e7ff; }
+.discord-btn.ok { background:var(--green-lt); border-color:var(--green-bd); color:var(--green); }
+.discord-label { display:inline; }
+
+/* YESTERDAY SUMMARY */
+.yest-summary { flex-shrink:0; padding:10px 16px 8px; background:var(--white); border-bottom:1px solid var(--border); display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.sum-stat .sv { font-size:1.2rem; font-weight:800; line-height:1; color:var(--navy); }
+.sum-stat .sv.green { color:var(--green); }
+.sum-stat .sv.red   { color:var(--red); }
+.sum-stat .sv.amber { color:var(--amber); }
+.sum-stat .sl { font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:var(--dim); letter-spacing:1.5px; text-transform:uppercase; margin-top:3px; }
+.win-bar { grid-column:1/-1; height:3px; background:var(--s3); border-radius:2px; overflow:hidden; margin-top:2px; }
+.win-bar-fill { height:100%; background:linear-gradient(90deg,var(--green),#22d3ee); border-radius:2px; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
+
+/* RESULTS LIST */
+.yest-scroll { flex:1; overflow-y:auto; background:var(--white); -webkit-overflow-scrolling:touch; }
+.yest-scroll::-webkit-scrollbar { width:3px; }
+.yest-scroll::-webkit-scrollbar-thumb { background:var(--s3); }
+
+.result-row { display:grid; grid-template-columns:4px 1fr auto auto auto; align-items:center; border-bottom:1px solid var(--b2); }
+.result-accent { width:4px; align-self:stretch; }
+.result-accent.win  { background:var(--green); }
+.result-accent.loss { background:var(--red); }
+.result-accent.push { background:var(--dim); }
+.result-info { padding:7px 12px; }
+.result-name { font-weight:700; font-size:0.88rem; color:var(--navy); line-height:1.2; }
+.result-meta { font-family:'JetBrains Mono',monospace; font-size:0.57rem; color:var(--dim); margin-top:2px; }
+.result-odds-col { font-family:'JetBrains Mono',monospace; font-size:0.85rem; font-weight:700; color:var(--amber); padding:0 10px; text-align:right; }
+.result-icon { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.62rem; font-weight:700; margin-right:2px; flex-shrink:0; }
+.result-icon.win  { background:var(--green-lt); color:var(--green); border:1px solid var(--green-bd); }
+.result-icon.loss { background:var(--red-lt);   color:var(--red);   border:1px solid var(--red-bd); }
+.result-icon.push { background:var(--s2);       color:var(--dim);   border:1px solid var(--border); }
+.result-pl { font-family:'JetBrains Mono',monospace; font-size:0.85rem; font-weight:700; min-width:52px; text-align:right; padding:0 12px 0 4px; }
+.result-pl.win  { color:var(--green); }
+.result-pl.loss { color:var(--red); }
+.result-pl.push { color:var(--dim); }
+.result-row.push .result-name,
+.result-row.push .result-odds-col { opacity:0.38; text-decoration:line-through; text-decoration-color:var(--dim); }
+
+/* ═══════════════════════════════
+   PAGE 2 — SUMMARY
+═══════════════════════════════ */
+.summary-page {
+  flex:1;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+.summary-page::-webkit-scrollbar { width:3px; }
+.summary-page::-webkit-scrollbar-thumb { background:var(--s3); }
+
+.section-title {
+  font-size:0.78rem; font-weight:700; color:var(--mid);
+  letter-spacing:2px; text-transform:uppercase;
+  margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+}
+.section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ALL-TIME CARD */
+.alltime-card {
+  background:linear-gradient(135deg,var(--navy) 0%,#1a4a7a 100%);
+  border-radius:14px; overflow:hidden;
+  box-shadow:0 4px 16px rgba(30,58,95,0.2);
+}
+.alltime-header { padding:16px 20px 14px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.alltime-title { font-weight:800; font-size:1rem; color:#fff; }
+.alltime-sub   { font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:rgba(255,255,255,0.4); letter-spacing:1px; margin-top:2px; }
+.alltime-badge { font-family:'JetBrains Mono',monospace; font-size:0.95rem; font-weight:700; padding:5px 14px; border-radius:7px; background:rgba(74,222,128,0.15); border:1px solid rgba(74,222,128,0.3); color:#4ade80; white-space:nowrap; }
+
+.alltime-books { display:grid; grid-template-columns:1fr 1fr; }
+.alltime-book-row { display:flex; justify-content:space-between; padding:9px 20px; border-bottom:1px solid rgba(255,255,255,0.06); }
+.alltime-book-row:nth-child(odd) { border-right:1px solid rgba(255,255,255,0.06); }
+.alltime-book-name { font-size:0.88rem; font-weight:500; color:rgba(255,255,255,0.75); }
+.alltime-book-pl   { font-family:'JetBrains Mono',monospace; font-size:0.88rem; font-weight:700; }
+.alltime-book-pl.pos { color:#4ade80; }
+.alltime-book-pl.neg { color:#f87171; }
+
+.alltime-footer { padding:12px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:rgba(0,0,0,0.15); }
+.alltime-footer-item { display:flex; flex-direction:column; }
+.alltime-footer-lbl { font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:rgba(255,255,255,0.35); letter-spacing:1px; text-transform:uppercase; }
+.alltime-footer-val { font-family:'JetBrains Mono',monospace; font-size:0.95rem; font-weight:700; }
+.alltime-footer-val.pos { color:#4ade80; }
+
+.fb-row { display:flex; justify-content:space-between; padding:8px 20px; background:rgba(251,191,36,0.1); border-top:1px solid rgba(251,191,36,0.2); }
+.fb-lbl { font-size:0.85rem; font-weight:500; color:#fbbf24; }
+.fb-val { font-family:'JetBrains Mono',monospace; font-size:0.85rem; font-weight:700; color:#fbbf24; }
+
+/* MONTHLY GRID — 2 col mobile, 3 col desktop */
+.monthly-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+.month-card { background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+.month-header { padding:12px 16px 10px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:6px; }
+.month-name { font-weight:800; font-size:0.9rem; color:var(--navy); }
+.month-total-badge { font-family:'JetBrains Mono',monospace; font-size:0.82rem; font-weight:700; padding:3px 10px; border-radius:5px; white-space:nowrap; }
+.month-total-badge.pos { background:var(--green-lt); color:var(--green); border:1px solid var(--green-bd); }
+.month-total-badge.neg { background:var(--red-lt);   color:var(--red);   border:1px solid var(--red-bd); }
+.month-body { padding:6px 0; }
+.book-row { display:flex; justify-content:space-between; align-items:center; padding:6px 16px; }
+.book-row-name { font-size:0.83rem; font-weight:500; color:var(--text); }
+.book-row-pl { font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:700; }
+.book-row-pl.pos  { color:var(--green); }
+.book-row-pl.neg  { color:var(--red); }
+.book-row-pl.zero { color:var(--dim); }
+.month-footer { padding:8px 16px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--s2); flex-wrap:wrap; gap:4px; }
+.month-footer-lbl { font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:var(--dim); letter-spacing:1px; text-transform:uppercase; }
+.month-footer-val { font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:700; }
+.month-footer-val.pos { color:var(--green); }
+.month-footer-val.neg { color:var(--red); }
+.free-bets-row { display:flex; justify-content:space-between; padding:6px 16px; background:var(--amber-lt); border-top:1px solid var(--amber-bd); }
+.free-bets-lbl { font-size:0.8rem; font-weight:500; color:var(--amber); }
+.free-bets-val { font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:700; color:var(--amber); }
+
+/* PLAYERS GRID */
+.players-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.players-card { background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+.players-card-header { padding:12px 16px 10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+.players-card-header h3 { font-size:0.92rem; font-weight:700; color:var(--navy); }
+
+.player-row { display:grid; grid-template-columns:22px 1fr auto auto; align-items:center; gap:8px; padding:10px 16px; border-bottom:1px solid var(--b2); position:relative; overflow:hidden; }
+.player-row:last-child { border-bottom:none; }
+.player-bar { position:absolute; left:0; top:0; bottom:0; width:0; z-index:0; transition:width 1s ease; pointer-events:none; }
+.player-bar.green { background:rgba(22,163,74,0.07); }
+.player-bar.red   { background:rgba(220,38,38,0.07); }
+.player-row > * { position:relative; z-index:1; }
+.player-rank { font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:700; color:var(--dim); text-align:center; }
+.player-row-name { font-weight:600; font-size:0.9rem; color:var(--navy); line-height:1.2; }
+.player-record { font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--mid); white-space:nowrap; }
+.player-pl { font-family:'JetBrains Mono',monospace; font-size:0.9rem; font-weight:700; text-align:right; min-width:50px; }
+.player-pl.pos { color:var(--green); }
+.player-pl.neg { color:var(--red); }
+
+/* ═══════════════════════════════
+   MOBILE BOTTOM NAV (≤640px)
+═══════════════════════════════ */
+.bottom-nav {
+  display:none;
+  flex-shrink:0;
+  background:var(--white);
+  border-top:1px solid var(--border);
+  padding-bottom:var(--safe-bottom);
+  box-shadow:0 -2px 10px rgba(0,0,0,0.06);
+  z-index:20;
+}
+.bottom-nav-inner { display:flex; }
+.bottom-nav-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; padding:8px 4px;
+  background:transparent; border:none; cursor:pointer;
+  font-family:'Syne',sans-serif; font-weight:600; font-size:0.62rem;
+  color:var(--dim); transition:color 0.15s;
+}
+.bottom-nav-btn.active { color:var(--navy); }
+.bottom-nav-btn svg { transition:transform 0.15s; }
+.bottom-nav-btn.active svg { transform:scale(1.1); }
+.bnb-dot { width:4px; height:4px; border-radius:50%; background:var(--blue); opacity:0; transition:opacity 0.15s; margin-top:1px; }
+.bottom-nav-btn.active .bnb-dot { opacity:1; }
+
+/* ═══════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════ */
+
+/* TABLET PORTRAIT (641px–900px) */
+@media (min-width: 641px) and (max-width: 900px) {
+  /* Topbar */
+  .topbar { padding:0 16px; gap:10px; height:60px; }
+  .brand-icon { width:34px; height:34px; font-size:16px; }
+  .brand-name { font-size:1.1rem; }
+  .brand-sub { display:none; }
+  .topbar-right { display:none; }
+  .ts-chip { padding:7px 14px; }
+  .ts-chip .lbl { display:none; }
+  .ts-chip .val { font-size:1.2rem; margin-top:0; }
+
+  /* Daily: Today (wider) + Parlays top row, Yesterday full width bottom */
+  .daily-layout {
+    grid-template-columns: 55% 45%;
+    grid-template-rows: 1fr 1fr;
+    height:100%;
+  }
+  #paneToday   { grid-column:1; grid-row:1; }
+  #paneParlays { grid-column:2; grid-row:1; }
+  #paneYest    { grid-column:1 / span 2; grid-row:2; }
+
+  /* Today table: fixed columns, hide FV, compact */
+  table.plays { table-layout:fixed; }
+  table.plays col.col-player { width:42%; }
+  table.plays col.col-book   { width:0; }
+  table.plays col.col-odds   { width:28%; }
+  table.plays col.col-fv     { width:0; }
+  table.plays col.col-ev     { width:30%; }
+  .col-fv { display:none; }
+  /* Hide book column on tablet to free space */
+  table.plays th:nth-child(2),
+  table.plays td:nth-child(2) { display:none; }
+  table.plays td { padding:11px 10px; }
+  table.plays thead th { padding:8px 10px; font-size:0.6rem; }
+  .player { font-size:0.9rem; }
+  .odds-num { font-size:0.9rem; }
+  .ev-chip { font-size:0.7rem; }
+
+  /* Yesterday full-width: 2-col results grid */
+  #paneYest .yest-summary {
+    grid-template-columns: repeat(5, 1fr);
+    padding:12px 20px 10px;
+  }
+  #paneYest .win-bar { grid-column:1 / -1; }
+  #paneYest .yest-scroll {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-content:start;
+    overflow-y:auto;
+  }
+
+  /* Summary page */
+  .monthly-grid { grid-template-columns:1fr 1fr; }
+  .players-grid { grid-template-columns:1fr 1fr; }
+}
+
+/* TABLET LANDSCAPE (901px–1100px) */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .topbar { padding:0 20px; gap:14px; }
+  .brand-sub { display:none; }
+  .topbar-right { display:none; }
+  .ts-chip { padding:6px 12px; }
+  .ts-chip .val { font-size:1.35rem; }
+
+  .daily-layout { grid-template-columns:1fr 1fr 1fr; }
+  table.plays td { padding:10px 10px; }
+  .col-fv { display:none; }
+  .player { font-size:0.88rem; }
+  .odds-num { font-size:0.88rem; }
+  .result-info { padding:9px 10px; }
+  .result-pl { padding:0 10px 0 4px; }
+
+  .monthly-grid { grid-template-columns:1fr 1fr; }
+  .players-grid { grid-template-columns:1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .monthly-grid { grid-template-columns:1fr 1fr; }
+  .players-grid { grid-template-columns:1fr; }
+}
+
+@media (max-width: 640px) {
+  /* Restore compact topbar on mobile */
+  .topbar { height:calc(52px + env(safe-area-inset-top, 0px)); padding:0 14px; gap:10px; }
+  .brand-icon { width:30px; height:30px; font-size:14px; border-radius:8px; }
+  .brand-name { font-size:1rem; letter-spacing:1px; }
+  .brand-sub { display:none; }
+  .ts-chip { padding:4px 9px; border-radius:7px; }
+  .ts-chip .lbl { display:none; }
+  .ts-chip .val { font-size:0.78rem; margin-top:0; }
+  .topbar-right { display:none; }
+  .live-dot { font-size:0.55rem; gap:5px; }
+  .live-dot::before { width:5px; height:5px; }
+
+  /* Hide desktop tab bar, show bottom nav */
+  .tab-bar { display:none; }
+  .bottom-nav { display:flex; flex-direction:column; }
+
+  /* Show sub-tab-bar inside daily page */
+  .sub-tab-bar { display:flex; }
+
+  /* Daily: single column */
+  .daily-layout { grid-template-columns:1fr; }
+  /* Discord: icon only */
+  .discord-label { display:none; }
+  .discord-btn { padding:7px 10px; }
+
+  /* Summary padding */
+  .summary-page { padding:12px; gap:14px; }
+
+  /* Monthly: single col on very small screens */
+  .monthly-grid { grid-template-columns:1fr; }
+  .players-grid { grid-template-columns:1fr; }
+
+  /* Alltime books: single col */
+  .alltime-books { grid-template-columns:1fr; }
+  .alltime-book-row:nth-child(odd) { border-right:none; }
+
+  /* Hide FV column on mobile */
+  .col-fv { display:none; }
+
+  table.plays thead th { padding:8px 10px 7px; font-size:0.5rem; }
+  table.plays td { padding:11px 10px; }
+  .player { font-size:0.82rem; }
+}
+
+@media (max-width: 380px) {
+  .topbar { padding:0 10px; }
+  .topbar-stats { gap:4px; }
+  .ts-chip { padding:4px 7px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🏒</div>
+    <div>
+      <div class="brand-name">ATGS</div>
+      <div class="brand-sub">Circa · ESPN · PN</div>
+    </div>
+  </div>
+  <div class="topbar-stats">
+    <div class="ts-chip"><span class="lbl">Personal</span><span class="val up">+91.01u</span></div>
+    <div class="ts-chip"><span class="lbl">Total</span><span class="val cy">+83.01u</span></div>
+    <div class="ts-chip"><span class="lbl">Daily</span><span class="val" style="color:#f87171">−0.80u</span></div>
+  </div>
+  <div class="topbar-right">
+    <div class="date-pill">MON · MAR 09 · 2026</div>
+    <div class="live-dot">LIVE</div>
+  </div>
+</div>
+
+<!-- DESKTOP TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('daily', this)">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Daily Plays
+  </button>
+  <button class="tab-btn" onclick="switchTab('summary', this)">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Summary
+  </button>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap"><div class="ticker-inner" id="ticker"></div></div>
+
+<!-- CONTENT -->
+<div class="content-area">
+
+  <!-- PAGE 1: DAILY -->
+  <div class="page active" id="page-daily">
+
+    <!-- Mobile sub-tabs -->
+    <div class="sub-tab-bar">
+      <button class="sub-tab-btn active" id="subToday" onclick="switchSubTab('today')">
+        📋 Today
+      </button>
+      <button class="sub-tab-btn" id="subYest" onclick="switchSubTab('yesterday')">
+        ✓ Yesterday
+      </button>
+      <button class="sub-tab-btn" id="subParlays" onclick="switchSubTab('parlays')">
+        🎰 Parlays
+      </button>
+    </div>
+
+    <div class="daily-layout">
+      <!-- TODAY PANE -->
+      <div class="pane" id="paneToday">
+        <div class="pane-head">
+          <div class="pane-title">
+            <div class="icon-wrap blue">📋</div>
+            <h2>Today's Plays</h2>
+            <span class="badge" id="todayCount">—</span>
+          </div>
+  
+        </div>
+        <div class="today-scroll">
+          <table class="plays">
+            <colgroup>
+              <col class="col-player">
+              <col class="col-book">
+              <col class="col-odds">
+              <col class="col-fv">
+              <col class="col-ev">
+            </colgroup>
+            <thead><tr><th>Player</th><th>Book</th><th>Odds</th><th class="col-fv">FV</th><th>EV %</th></tr></thead>
+            <tbody id="todayBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- YESTERDAY PANE -->
+      <div class="pane" id="paneYest">
+        <div class="pane-head">
+          <div class="pane-title">
+            <div class="icon-wrap green">✓</div>
+            <h2>Yesterday</h2>
+            <span class="badge">MAR 08</span>
+          </div>
+          <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
+        </div>
+        <div class="yest-summary">
+          <div class="sum-stat"><div class="sv green" id="y-wins">—</div><div class="sl">Wins</div></div>
+          <div class="sum-stat"><div class="sv red"   id="y-losses">—</div><div class="sl">Losses</div></div>
+          <div class="sum-stat"><div class="sv amber" id="y-winpct">—</div><div class="sl">Win %</div></div>
+          <div class="sum-stat"><div class="sv" id="y-pl" style="color:var(--navy)">—</div><div class="sl">P/L</div></div>
+          <div class="win-bar"><div class="win-bar-fill" id="winBar" style="width:0%"></div></div>
+        </div>
+        <div class="yest-scroll" id="yesterdayList"></div>
+      </div>
+
+      <!-- PARLAYS PANE -->
+      <div class="pane" id="paneParlays">
+        <div class="pane-head">
+          <div class="pane-title">
+            <div class="icon-wrap" style="background:#f5f0ff;border:1px solid #d8b4fe;">🎰</div>
+            <h2>Parlays</h2>
+            <span class="badge" id="parlayCount">—</span>
+          </div>
+        </div>
+        <div class="parlay-scroll" id="parlayList"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PAGE 2: SUMMARY -->
+  <div class="page" id="page-summary">
+    <div class="summary-page">
+
+      <div>
+        <div class="section-title">All-Time (Since Oct 16, 2025)</div>
+        <div class="alltime-card">
+          <div class="alltime-header">
+            <div>
+            <div class="alltime-title">Full Season Performance</div>
+              <div class="alltime-sub">CIRCA · ESPN · PN</div>
+            </div>
+            <span class="alltime-badge">+83.01u Net</span>
+          </div>
+          <div class="alltime-books">
+            <div class="alltime-book-row"><span class="alltime-book-name">Bet365</span><span class="alltime-book-pl pos">+43.65</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">FanDuel</span><span class="alltime-book-pl pos">+27.50</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">MGM</span><span class="alltime-book-pl pos">+20.22</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">BetRivers/Kambi</span><span class="alltime-book-pl neg">−1.00</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">Fanatics</span><span class="alltime-book-pl pos">+0.22</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">DraftKings</span><span class="alltime-book-pl pos">+0.42</span></div>
+          </div>
+          <div class="fb-row"><span class="fb-lbl">Free Bets</span><span class="fb-val">−8.00</span></div>
+          <div class="alltime-footer">
+            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Gross</span><span class="alltime-footer-val pos">+91.01u</span></div>
+            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Free Bets</span><span class="alltime-footer-val" style="color:#fbbf24">−8.00u</span></div>
+            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Net Total</span><span class="alltime-footer-val pos">+83.01u</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-title">Monthly Breakdown</div>
+        <div class="monthly-grid" id="monthlyGrid"></div>
+      </div>
+
+      <div>
+        <div class="section-title">Player Leaderboard</div>
+        <div class="players-grid">
+          <div class="players-card">
+            <div class="players-card-header">
+              <div class="icon-wrap green">🏆</div>
+              <h3>Top 5</h3>
+            </div>
+            <div id="top5List"></div>
+          </div>
+          <div class="players-card">
+            <div class="players-card-header">
+              <div class="icon-wrap" style="background:var(--red-lt);border:1px solid var(--red-bd);">📉</div>
+              <h3>Bottom 5</h3>
+            </div>
+            <div id="bottom5List"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:8px;flex-shrink:0;"></div>
+    </div>
+  </div>
+
+</div><!-- /content-area -->
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bottom-nav-btn active" id="bnb-daily" onclick="switchTab('daily', this, true)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Daily
+      <div class="bnb-dot"></div>
+    </button>
+    <button class="bottom-nav-btn" id="bnb-summary" onclick="switchTab('summary', this, true)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Summary
+      <div class="bnb-dot"></div>
+    </button>
+  </div>
+</div>
+
+<script>
+const fmt    = v => (!v && v !== 0) ? '—' : (v > 0 ? `+${v}` : `${v}`);
+const fmtPL  = v => (v >= 0 ? '+' : '') + v.toFixed(2);
+
+// ── TAB SWITCHING ─────────────────────────────────
+let currentTab = 'daily';
+function switchTab(tab, btnEl, fromBottom) {
+  currentTab = tab;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + tab).classList.add('active');
+
+  // Desktop tabs
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const deskBtn = document.querySelector(`.tab-btn[onclick*="${tab}"]`);
+  if (deskBtn) deskBtn.classList.add('active');
+
+  // Mobile bottom nav
+  document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
+  const mobBtn = document.getElementById('bnb-' + tab);
+  if (mobBtn) mobBtn.classList.add('active');
+}
+
+// ── MOBILE SUB-TAB (Today vs Yesterday) ──────────
+function switchSubTab(which) {
+  const isMobile = window.innerWidth <= 640;
+  document.getElementById('subToday').classList.toggle('active', which === 'today');
+  document.getElementById('subYest').classList.toggle('active', which === 'yesterday');
+  document.getElementById('subParlays').classList.toggle('active', which === 'parlays');
+  if (isMobile) {
+    document.getElementById('paneToday').classList.toggle('mobile-hidden', which !== 'today');
+    document.getElementById('paneYest').classList.toggle('mobile-hidden', which !== 'yesterday');
+    document.getElementById('paneParlays').classList.toggle('mobile-hidden', which !== 'parlays');
+  }
+}
+
+function handleResize() {
+  const isMobile = window.innerWidth <= 640;
+  if (!isMobile) {
+    document.getElementById('paneToday').classList.remove('mobile-hidden');
+    document.getElementById('paneYest').classList.remove('mobile-hidden');
+    document.getElementById('paneParlays').classList.remove('mobile-hidden');
+  } else {
+    const todayActive   = document.getElementById('subToday').classList.contains('active');
+    const yestActive    = document.getElementById('subYest').classList.contains('active');
+    const parlayActive  = document.getElementById('subParlays').classList.contains('active');
+    document.getElementById('paneToday').classList.toggle('mobile-hidden', !todayActive);
+    document.getElementById('paneYest').classList.toggle('mobile-hidden', !yestActive);
+    document.getElementById('paneParlays').classList.toggle('mobile-hidden', !parlayActive);
+  }
+}
+window.addEventListener('resize', handleResize);
+handleResize();
+
+// ── DATA ──────────────────────────────────────────
+const todayPlays = [];
+
+const yesterdayPlays = [
+  {player:"Alex Tuch",         book:"Bet365", odds:220, ev:"2.9%", units:1,    pl:2.20},
+  {player:"Alex Debrincat",    book:"Bet365", odds:165, ev:"2.1%", units:1,    pl:-1.00},
+  {player:"Gabriel Landeskog", book:"Bet365", odds:250, ev:"—",    units:0,    pl:0},
+  {player:"Cale Makar",        book:"Bet365", odds:350, ev:"0.3%", units:1,    pl:-1.00},
+  {player:"Matt Boldy",        book:"Bet365", odds:180, ev:"0.2%", units:1,    pl:-1.00},
+];
+
+const monthlyData = [
+  { name:"October 2025",  books:[{name:"Bet365",pl:9.00},{name:"FanDuel",pl:8.45},{name:"MGM",pl:5.30},{name:"BetRivers/Kambi",pl:-4.70},{name:"Fanatics",pl:-0.13},{name:"DraftKings",pl:0}], freeBets:-5, gross:17.92, net:12.92 },
+  { name:"November 2025", books:[{name:"Bet365",pl:-2.60},{name:"FanDuel",pl:2.25},{name:"MGM",pl:0.16},{name:"BetRivers/Kambi",pl:4.20},{name:"Fanatics",pl:3.65},{name:"DraftKings",pl:0}], freeBets:-2, gross:7.66, net:5.66 },
+  { name:"December 2025", books:[{name:"Bet365",pl:9.30},{name:"FanDuel",pl:7.75},{name:"MGM",pl:6.71},{name:"BetRivers/Kambi",pl:2.50},{name:"Fanatics",pl:0.70},{name:"DraftKings",pl:0.80}], freeBets:0, gross:27.76, net:27.76 },
+  { name:"January 2026",  books:[{name:"Bet365",pl:1.60},{name:"FanDuel",pl:4.65},{name:"MGM",pl:7.35},{name:"BetRivers",pl:0},{name:"Fanatics",pl:-3.00},{name:"DraftKings",pl:1.62}], freeBets:-1, gross:12.22, net:11.22 },
+  { name:"February 2026", books:[{name:"Bet365",pl:6.85},{name:"FanDuel",pl:3.85},{name:"MGM",pl:0.70},{name:"BetRivers",pl:-1.00},{name:"Fanatics",pl:0},{name:"DraftKings",pl:-2.00}], freeBets:0, gross:8.40, net:8.40 },
+  { name:"March 2026",    books:[{name:"Bet365",pl:19.50},{name:"FanDuel",pl:0.55},{name:"MGM",pl:0},{name:"BetRivers",pl:-2.00},{name:"Fanatics",pl:-1.00},{name:"DraftKings",pl:0}], freeBets:0, gross:17.05, net:17.05 },
+];
+
+const top5 = [
+  {name:"Seth Jarvis",       pl:9.60,  wins:5, losses:0},
+  {name:"Cutter Gauthier",   pl:8.65,  wins:6, losses:4},
+  {name:"Martin Necas",      pl:8.20,  wins:5, losses:2},
+  {name:"Zach Hyman",        pl:7.50,  wins:6, losses:3},
+  {name:"Macklin Celebrini", pl:6.35,  wins:5, losses:2},
+];
+const bottom5 = [
+  {name:"Matt Boldy",         pl:-9.35, wins:1, losses:11},
+  {name:"Valeri Nichushkin",  pl:-5.00, wins:0, losses:5},
+  {name:"Brady Tkachuk",      pl:-5.00, wins:0, losses:5},
+  {name:"Tomas Hertl",        pl:-4.25, wins:1, losses:6},
+  {name:"Sam Reinhart",       pl:-3.00, wins:0, losses:3},
+];
+
+// ── RENDER TODAY ──────────────────────────────────
+function renderToday() {
+  const tbody = document.getElementById('todayBody');
+  const activeCount = todayPlays.filter(p => !p.cashedOut).length;
+  document.getElementById('todayCount').textContent = activeCount + ' plays';
+
+  if (todayPlays.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="5" style="text-align:center;padding:40px 16px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;">No plays yet</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+  todayPlays.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    tr.style.animationDelay = (i * 0.05) + 's';
+    if (p.cashedOut) {
+      tr.style.opacity = '0.38';
+      tr.innerHTML = `
+        <td><span class="player" style="text-decoration:line-through;color:var(--mid)">${p.player}</span></td>
+        <td><span class="book-chip" style="opacity:0.5">${p.book}</span></td>
+        <td colspan="3" style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--dim);letter-spacing:1px;padding-left:4px;">CASHED OUT</td>`;
+    } else {
+      tr.innerHTML = `
+        <td><span class="player">${p.player}</span></td>
+        <td><span class="book-chip">${p.book}</span></td>
+        <td><span class="odds-num">${fmt(p.odds)}</span></td>
+        <td class="col-fv"><span class="fv-num">${fmt(p.fv)}</span></td>
+        <td><span class="ev-chip">${p.ev}</span></td>`;
+    }
+    tbody.appendChild(tr);
+  });
+}
+
+// ── RENDER YESTERDAY ─────────────────────────────
+function renderYesterday() {
+  const list = document.getElementById('yesterdayList');
+  let wins = 0, losses = 0, totalPL = 0;
+  yesterdayPlays.forEach(p => {
+    const isPush = p.units === 0;
+    const isWin  = !isPush && p.pl > 0;
+    const isLoss = !isPush && p.pl < 0;
+    const cls    = isPush ? 'push' : isWin ? 'win' : 'loss';
+    if (isWin)  { wins++;   totalPL += p.pl; }
+    if (isLoss) { losses++; totalPL += p.pl; }
+    const div = document.createElement('div');
+    div.className = 'result-row ' + cls;
+    div.innerHTML = `
+      <div class="result-accent ${cls}"></div>
+      <div class="result-info">
+        <div class="result-name">${p.player}</div>
+        <div class="result-meta">${p.book} · EV ${p.ev}</div>
+      </div>
+      <div class="result-odds-col">${fmt(p.odds)}</div>
+      <div class="result-icon ${cls}">${isPush ? '–' : isWin ? '✓' : '✕'}</div>
+      <div class="result-pl ${cls}">${isPush ? 'VOID' : (p.pl > 0 ? '+' : '') + p.pl.toFixed(2) + 'u'}</div>`;
+    list.appendChild(div);
+  });
+  const tracked = wins + losses;
+  const pct = tracked > 0 ? Math.round(wins / tracked * 100) : 0;
+  document.getElementById('y-wins').textContent = wins;
+  document.getElementById('y-losses').textContent = losses;
+  document.getElementById('y-winpct').textContent = pct + '%';
+  document.getElementById('yestRecord').textContent = wins + 'W – ' + losses + 'L';
+  const plEl = document.getElementById('y-pl');
+  plEl.textContent = fmtPL(totalPL) + 'u';
+  plEl.style.color = totalPL > 0 ? 'var(--green)' : totalPL < 0 ? 'var(--red)' : 'var(--mid)';
+  setTimeout(() => { document.getElementById('winBar').style.width = pct + '%'; }, 300);
+}
+
+// ── RENDER MONTHLY ────────────────────────────────
+function renderMonthly() {
+  const grid = document.getElementById('monthlyGrid');
+  monthlyData.forEach(m => {
+    const isPos = m.net >= 0;
+    const card = document.createElement('div');
+    card.className = 'month-card';
+    const booksHtml = m.books.map(b => {
+      const cls = b.pl > 0 ? 'pos' : b.pl < 0 ? 'neg' : 'zero';
+      return `<div class="book-row"><span class="book-row-name">${b.name}</span><span class="book-row-pl ${cls}">${b.pl > 0 ? '+' : ''}${b.pl.toFixed(2)}</span></div>`;
+    }).join('');
+    const fbSign = m.freeBets >= 0 ? '+' : '';
+    card.innerHTML = `
+      <div class="month-header">
+        <span class="month-name">${m.name}</span>
+        <span class="month-total-badge ${isPos ? 'pos' : 'neg'}">${fmtPL(m.net)}u</span>
+      </div>
+      <div class="month-body">${booksHtml}</div>
+      ${m.freeBets !== 0 ? `<div class="free-bets-row"><span class="free-bets-lbl">Free Bets</span><span class="free-bets-val">${fbSign}${m.freeBets.toFixed(2)}</span></div>` : ''}
+      <div class="month-footer">
+        <span class="month-footer-lbl">Gross</span>
+        <span class="month-footer-val ${m.gross >= 0 ? 'pos' : 'neg'}">${fmtPL(m.gross)}u</span>
+        ${m.freeBets !== 0 ? `<span class="month-footer-lbl">Net</span><span class="month-footer-val ${isPos ? 'pos' : 'neg'}">${fmtPL(m.net)}u</span>` : ''}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── RENDER PLAYERS ────────────────────────────────
+function renderPlayers() {
+  const maxPos = top5[0].pl;
+  const maxNeg = Math.abs(bottom5[bottom5.length - 1].pl);
+  top5.forEach((p, i) => {
+    const pct = Math.round((p.pl / maxPos) * 100);
+    const div = document.createElement('div');
+    div.className = 'player-row';
+    div.innerHTML = `
+      <div class="player-bar green" style="width:0%"></div>
+      <span class="player-rank">${i+1}</span>
+      <span class="player-row-name">${p.name}</span>
+      <span class="player-record">${p.wins}W–${p.losses}L</span>
+      <span class="player-pl pos">${fmtPL(p.pl)}u</span>`;
+    document.getElementById('top5List').appendChild(div);
+    setTimeout(() => div.querySelector('.player-bar').style.width = pct + '%', 400 + i * 80);
+  });
+  bottom5.forEach((p, i) => {
+    const pct = Math.round((Math.abs(p.pl) / maxNeg) * 100);
+    const div = document.createElement('div');
+    div.className = 'player-row';
+    div.innerHTML = `
+      <div class="player-bar red" style="width:0%"></div>
+      <span class="player-rank">${i+1}</span>
+      <span class="player-row-name">${p.name}</span>
+      <span class="player-record">${p.wins}W–${p.losses}L</span>
+      <span class="player-pl neg">${fmtPL(p.pl)}u</span>`;
+    document.getElementById('bottom5List').appendChild(div);
+    setTimeout(() => div.querySelector('.player-bar').style.width = pct + '%', 400 + i * 80);
+  });
+}
+
+// ── TICKER ────────────────────────────────────────
+function renderTicker() {
+  const wins = yesterdayPlays.filter(p => p.pl > 0);
+  let html = '';
+  for (let j = 0; j < 2; j++) {
+    wins.forEach(p => { html += `<span class="win">✓ ${p.player}</span><span> · ${fmt(p.odds)} · +${p.pl.toFixed(2)}u</span>&nbsp;&nbsp;&nbsp;&nbsp;`; });
+    html += `<span class="hi">// ATGS NHL //</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>SEASON: <span class="hi">+79.31u</span></span>&nbsp;&nbsp;&nbsp;&nbsp;`;
+  }
+  document.getElementById('ticker').innerHTML = html;
+}
+
+// ── DISCORD ───────────────────────────────────────
+function copyDiscord() {
+  let msg = `🏒 **NHL ATGS Plays — Friday, March 6, 2026**\n*(Anytime Goal Scorer · Bet365)*\n\n`;
+  todayPlays.filter(p => !p.cashedOut).forEach(p => { msg += `• **${p.player}** — ${fmt(p.odds)} | FV: ${fmt(p.fv)} | EV: ${p.ev}\n`; });
+  msg += `\n📊 *Season: Personal +79.31u | Total +71.31u*\n🎯 *Good luck!*`;
+  navigator.clipboard.writeText(msg).then(() => {
+    const btn = document.getElementById('discordBtn');
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="discord-label"> Copied!</span>`;
+    btn.classList.add('ok');
+    setTimeout(() => {
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg><span class="discord-label"> Copy for Discord</span>`;
+      btn.classList.remove('ok');
+    }, 2200);
+  });
+}
+
+// ── PARLAY DATA ───────────────────────────────────
+const parlays = [];
+
+// ── RENDER PARLAYS ────────────────────────────────
+function renderParlays() {
+  const list = document.getElementById('parlayList');
+  document.getElementById('parlayCount').textContent = parlays.length + (parlays.length === 1 ? ' parlay' : ' parlays');
+
+  if (parlays.length === 0) {
+    list.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;padding:40px 20px;text-align:center;">
+      <div style="font-size:1.8rem;opacity:0.3;">🎰</div>
+      <div>No parlays yet</div>
+    </div>`;
+    return;
+  }
+
+  parlays.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'parlay-card';
+
+    const legsHtml = p.legs.map((leg, i) => `
+      <div class="parlay-leg">
+        <div class="parlay-leg-num">${i + 1}</div>
+        <div class="parlay-leg-info">
+          <div class="parlay-leg-player">${leg.player}</div>
+          <div class="parlay-leg-prop">${leg.prop}</div>
+        </div>
+      </div>`).join('');
+
+    card.innerHTML = `
+      <div class="parlay-card-header">
+        <div>
+          <div class="parlay-odds">${p.odds}</div>
+          <div class="parlay-matchup">${p.matchup}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;">
+          <span class="parlay-boost">${p.boost} BOOST</span>
+          <span class="book-chip">${p.book}</span>
+        </div>
+      </div>
+      ${legsHtml}`;
+
+    list.appendChild(card);
+  });
+}
+
+// ── INIT ──────────────────────────────────────────
+renderTicker();
+renderToday();
+renderYesterday();
+renderMonthly();
+renderPlayers();
+renderParlays();
+</script>
+
+<div style="text-align:center; padding:18px 24px; font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:rgba(100,116,139,0.6); letter-spacing:0.8px; line-height:1.8; border-top:1px solid var(--border); margin-top:8px;">
+  FOR ENTERTAINMENT PURPOSES ONLY &nbsp;·&nbsp; NOT AFFILIATED WITH THE NHL OR ANY SPORTSBOOK &nbsp;·&nbsp; PAST RESULTS DO NOT GUARANTEE FUTURE PERFORMANCE &nbsp;·&nbsp; GAMBLE RESPONSIBLY &nbsp;·&nbsp; IF YOU OR SOMEONE YOU KNOW HAS A GAMBLING PROBLEM, CALL 1-800-GAMBLER
+</div>
+
+</body>
+</html>
