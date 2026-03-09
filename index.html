@@ -139,7 +139,7 @@ body {
 .parlay-scroll::-webkit-scrollbar-thumb { background:var(--s3); }
 
 .parlay-card {
-  margin:12px 14px;
+  margin:10px 12px;
   background:var(--white);
   border:1px solid var(--border);
   border-radius:12px;
@@ -149,7 +149,7 @@ body {
 
 .parlay-card-header {
   display:flex; align-items:center; justify-content:space-between;
-  padding:10px 14px 9px;
+  padding:8px 12px 7px;
   background:var(--s2);
   border-bottom:1px solid var(--border);
   gap:8px;
@@ -157,20 +157,20 @@ body {
 
 .parlay-odds {
   font-family:'JetBrains Mono',monospace;
-  font-size:1rem; font-weight:800; color:var(--navy);
+  font-size:0.95rem; font-weight:800; color:var(--navy);
 }
 
 .parlay-boost {
   font-family:'JetBrains Mono',monospace;
-  font-size:0.68rem; font-weight:700;
-  padding:3px 9px; border-radius:5px;
+  font-size:0.65rem; font-weight:700;
+  padding:2px 8px; border-radius:5px;
   background:#f5f0ff; border:1px solid #d8b4fe; color:#7c3aed;
   white-space:nowrap;
 }
 
 .parlay-matchup {
   font-family:'JetBrains Mono',monospace;
-  font-size:0.58rem; color:var(--dim);
+  font-size:0.56rem; color:var(--dim);
   letter-spacing:0.5px;
 }
 
@@ -178,15 +178,15 @@ body {
   display:grid;
   grid-template-columns:18px 1fr auto;
   align-items:center;
-  gap:10px;
-  padding:9px 14px;
+  gap:8px;
+  padding:7px 12px;
   border-bottom:1px solid var(--b2);
 }
 .parlay-leg:last-child { border-bottom:none; }
 
 .parlay-leg-num {
   font-family:'JetBrains Mono',monospace;
-  font-size:0.6rem; font-weight:700;
+  font-size:0.58rem; font-weight:700;
   color:var(--dim); text-align:center;
   width:18px; height:18px;
   background:var(--s2); border:1px solid var(--border);
@@ -194,11 +194,11 @@ body {
   flex-shrink:0;
 }
 
-.parlay-leg-info { display:flex; flex-direction:column; gap:2px; }
-.parlay-leg-player { font-weight:700; font-size:0.88rem; color:var(--navy); }
+.parlay-leg-info { display:flex; flex-direction:column; gap:1px; }
+.parlay-leg-player { font-weight:700; font-size:0.84rem; color:var(--navy); }
 .parlay-leg-prop {
   font-family:'JetBrains Mono',monospace;
-  font-size:0.58rem; color:var(--mid); letter-spacing:0.3px;
+  font-size:0.56rem; color:var(--mid); letter-spacing:0.3px;
 }
 
 /* Mobile sub-tabs: hidden on desktop, shown only on mobile via media query */
@@ -222,7 +222,7 @@ body {
 .pane.mobile-hidden { display:none; }
 
 .pane-head {
-  padding:14px 20px 12px; background:var(--white);
+  padding:9px 14px 8px; background:var(--white);
   border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
   box-shadow:0 1px 3px rgba(0,0,0,0.04);
@@ -248,19 +248,19 @@ table.plays col.col-ev     { width:10%; }
 table.plays thead th {
   font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--dim);
   letter-spacing:1.2px; text-transform:uppercase; text-align:left;
-  padding:10px 16px 9px; background:var(--s2); border-bottom:1px solid var(--border);
+  padding:7px 14px 6px; background:var(--s2); border-bottom:1px solid var(--border);
   position:sticky; top:0; z-index:2;
 }
 table.plays tbody tr { border-bottom:1px solid var(--b2); transition:background 0.1s; animation:fadeUp 0.22s ease both; }
 table.plays tbody tr:active { background:var(--blue-lt); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
-table.plays td { padding:14px 16px; vertical-align:middle; }
+table.plays td { padding:9px 14px; vertical-align:middle; }
 
-.player   { font-weight:700; font-size:0.95rem; color:var(--navy); }
-.book-chip { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:0.62rem; padding:3px 9px; border-radius:5px; background:var(--blue-lt); border:1px solid var(--blue-bd); color:var(--blue); white-space:nowrap; }
-.odds-num { font-family:'JetBrains Mono',monospace; font-size:0.95rem; font-weight:700; color:var(--amber); }
-.fv-num   { font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--dim); }
-.ev-chip  { display:inline-flex; align-items:center; font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--green); background:var(--green-lt); border:1px solid var(--green-bd); padding:3px 9px; border-radius:5px; white-space:nowrap; font-weight:500; }
+.player   { font-weight:700; font-size:0.9rem; color:var(--navy); }
+.book-chip { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:0.6rem; padding:2px 7px; border-radius:5px; background:var(--blue-lt); border:1px solid var(--blue-bd); color:var(--blue); white-space:nowrap; }
+.odds-num { font-family:'JetBrains Mono',monospace; font-size:0.9rem; font-weight:700; color:var(--amber); }
+.fv-num   { font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--dim); }
+.ev-chip  { display:inline-flex; align-items:center; font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--green); background:var(--green-lt); border:1px solid var(--green-bd); padding:2px 7px; border-radius:5px; white-space:nowrap; font-weight:500; }
 
 /* Hide FV column on small screens */
 .col-fv { }
@@ -272,12 +272,12 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
 .discord-label { display:inline; }
 
 /* YESTERDAY SUMMARY */
-.yest-summary { flex-shrink:0; padding:14px 20px 12px; background:var(--white); border-bottom:1px solid var(--border); display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
-.sum-stat .sv { font-size:1.35rem; font-weight:800; line-height:1; color:var(--navy); }
+.yest-summary { flex-shrink:0; padding:10px 16px 8px; background:var(--white); border-bottom:1px solid var(--border); display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.sum-stat .sv { font-size:1.2rem; font-weight:800; line-height:1; color:var(--navy); }
 .sum-stat .sv.green { color:var(--green); }
 .sum-stat .sv.red   { color:var(--red); }
 .sum-stat .sv.amber { color:var(--amber); }
-.sum-stat .sl { font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:var(--dim); letter-spacing:1.5px; text-transform:uppercase; margin-top:4px; }
+.sum-stat .sl { font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:var(--dim); letter-spacing:1.5px; text-transform:uppercase; margin-top:3px; }
 .win-bar { grid-column:1/-1; height:3px; background:var(--s3); border-radius:2px; overflow:hidden; margin-top:2px; }
 .win-bar-fill { height:100%; background:linear-gradient(90deg,var(--green),#22d3ee); border-radius:2px; transition:width 1.2s cubic-bezier(.4,0,.2,1); }
 
@@ -291,15 +291,15 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
 .result-accent.win  { background:var(--green); }
 .result-accent.loss { background:var(--red); }
 .result-accent.push { background:var(--dim); }
-.result-info { padding:12px 16px; }
-.result-name { font-weight:700; font-size:0.93rem; color:var(--navy); line-height:1.2; }
-.result-meta { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--dim); margin-top:3px; }
-.result-odds-col { font-family:'JetBrains Mono',monospace; font-size:0.9rem; font-weight:700; color:var(--amber); padding:0 12px; text-align:right; }
-.result-icon { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:700; margin-right:2px; flex-shrink:0; }
+.result-info { padding:7px 12px; }
+.result-name { font-weight:700; font-size:0.88rem; color:var(--navy); line-height:1.2; }
+.result-meta { font-family:'JetBrains Mono',monospace; font-size:0.57rem; color:var(--dim); margin-top:2px; }
+.result-odds-col { font-family:'JetBrains Mono',monospace; font-size:0.85rem; font-weight:700; color:var(--amber); padding:0 10px; text-align:right; }
+.result-icon { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.62rem; font-weight:700; margin-right:2px; flex-shrink:0; }
 .result-icon.win  { background:var(--green-lt); color:var(--green); border:1px solid var(--green-bd); }
 .result-icon.loss { background:var(--red-lt);   color:var(--red);   border:1px solid var(--red-bd); }
 .result-icon.push { background:var(--s2);       color:var(--dim);   border:1px solid var(--border); }
-.result-pl { font-family:'JetBrains Mono',monospace; font-size:0.9rem; font-weight:700; min-width:56px; text-align:right; padding:0 16px 0 4px; }
+.result-pl { font-family:'JetBrains Mono',monospace; font-size:0.85rem; font-weight:700; min-width:52px; text-align:right; padding:0 12px 0 4px; }
 .result-pl.win  { color:var(--green); }
 .result-pl.loss { color:var(--red); }
 .result-pl.push { color:var(--dim); }
@@ -440,13 +440,13 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
   .brand-name { font-size:1.1rem; }
   .brand-sub { display:none; }
   .topbar-right { display:none; }
-  .ts-chip { padding:5px 10px; }
+  .ts-chip { padding:7px 14px; }
   .ts-chip .lbl { display:none; }
-  .ts-chip .val { font-size:0.92rem; margin-top:0; }
+  .ts-chip .val { font-size:1.2rem; margin-top:0; }
 
-  /* Daily: Today + Parlays top row, Yesterday full width bottom */
+  /* Daily: Today (wider) + Parlays top row, Yesterday full width bottom */
   .daily-layout {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 55% 45%;
     grid-template-rows: 1fr 1fr;
     height:100%;
   }
@@ -454,29 +454,35 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
   #paneParlays { grid-column:2; grid-row:1; }
   #paneYest    { grid-column:1 / span 2; grid-row:2; }
 
-  /* Yesterday in full-width: switch to horizontal summary + side-by-side layout */
+  /* Today table: fixed columns, hide FV, compact */
+  table.plays { table-layout:fixed; }
+  table.plays col.col-player { width:42%; }
+  table.plays col.col-book   { width:0; }
+  table.plays col.col-odds   { width:28%; }
+  table.plays col.col-fv     { width:0; }
+  table.plays col.col-ev     { width:30%; }
+  .col-fv { display:none; }
+  /* Hide book column on tablet to free space */
+  table.plays th:nth-child(2),
+  table.plays td:nth-child(2) { display:none; }
+  table.plays td { padding:11px 10px; }
+  table.plays thead th { padding:8px 10px; font-size:0.6rem; }
+  .player { font-size:0.9rem; }
+  .odds-num { font-size:0.9rem; }
+  .ev-chip { font-size:0.7rem; }
+
+  /* Yesterday full-width: 2-col results grid */
   #paneYest .yest-summary {
     grid-template-columns: repeat(5, 1fr);
     padding:12px 20px 10px;
   }
-  #paneYest .win-bar { grid-column: 1 / -1; }
+  #paneYest .win-bar { grid-column:1 / -1; }
   #paneYest .yest-scroll {
     display:grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:1fr 1fr;
     align-content:start;
     overflow-y:auto;
   }
-  .result-row { border-right:1px solid var(--b2); }
-
-  /* Tighten table for smaller panes */
-  table.plays td { padding:10px 10px; }
-  table.plays thead th { padding:8px 10px; font-size:0.58rem; }
-  .player { font-size:0.88rem; }
-  .odds-num { font-size:0.88rem; }
-  .col-fv { display:none; }
-
-  /* Parlay cards horizontal scroll */
-  .parlay-scroll { overflow-y:auto; }
 
   /* Summary page */
   .monthly-grid { grid-template-columns:1fr 1fr; }
@@ -489,8 +495,8 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
   .brand-sub { display:none; }
   .topbar-right { display:none; }
   .ts-chip { padding:6px 12px; }
+  .ts-chip .val { font-size:1.35rem; }
 
-  /* Full 3-col but tighten content */
   .daily-layout { grid-template-columns:1fr 1fr 1fr; }
   table.plays td { padding:10px 10px; }
   .col-fv { display:none; }
@@ -572,12 +578,12 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
     </div>
   </div>
   <div class="topbar-stats">
-    <div class="ts-chip"><span class="lbl">Personal</span><span class="val up">+79.31u</span></div>
-    <div class="ts-chip"><span class="lbl">Total</span><span class="val cy">+71.31u</span></div>
-    <div class="ts-chip"><span class="lbl">Daily</span><span class="val amb">+4.75u</span></div>
+    <div class="ts-chip"><span class="lbl">Personal</span><span class="val up">+91.01u</span></div>
+    <div class="ts-chip"><span class="lbl">Total</span><span class="val cy">+83.01u</span></div>
+    <div class="ts-chip"><span class="lbl">Daily</span><span class="val" style="color:#f87171">−0.80u</span></div>
   </div>
   <div class="topbar-right">
-    <div class="date-pill">FRI · MAR 06 · 2026</div>
+    <div class="date-pill">MON · MAR 09 · 2026</div>
     <div class="live-dot">LIVE</div>
   </div>
 </div>
@@ -648,7 +654,7 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
           <div class="pane-title">
             <div class="icon-wrap green">✓</div>
             <h2>Yesterday</h2>
-            <span class="badge">MAR 05</span>
+            <span class="badge">MAR 08</span>
           </div>
           <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
         </div>
@@ -686,13 +692,13 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
         <div class="alltime-card">
           <div class="alltime-header">
             <div>
-              <div class="alltime-title">Full Season Performance</div>
+            <div class="alltime-title">Full Season Performance</div>
               <div class="alltime-sub">CIRCA · ESPN · PN</div>
             </div>
-            <span class="alltime-badge">+70.21u Net</span>
+            <span class="alltime-badge">+83.01u Net</span>
           </div>
           <div class="alltime-books">
-            <div class="alltime-book-row"><span class="alltime-book-name">Bet365</span><span class="alltime-book-pl pos">+30.85</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">Bet365</span><span class="alltime-book-pl pos">+43.65</span></div>
             <div class="alltime-book-row"><span class="alltime-book-name">FanDuel</span><span class="alltime-book-pl pos">+27.50</span></div>
             <div class="alltime-book-row"><span class="alltime-book-name">MGM</span><span class="alltime-book-pl pos">+20.22</span></div>
             <div class="alltime-book-row"><span class="alltime-book-name">BetRivers/Kambi</span><span class="alltime-book-pl neg">−1.00</span></div>
@@ -701,9 +707,9 @@ table.plays td { padding:14px 16px; vertical-align:middle; }
           </div>
           <div class="fb-row"><span class="fb-lbl">Free Bets</span><span class="fb-val">−8.00</span></div>
           <div class="alltime-footer">
-            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Gross</span><span class="alltime-footer-val pos">+78.21u</span></div>
+            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Gross</span><span class="alltime-footer-val pos">+91.01u</span></div>
             <div class="alltime-footer-item"><span class="alltime-footer-lbl">Free Bets</span><span class="alltime-footer-val" style="color:#fbbf24">−8.00u</span></div>
-            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Net Total</span><span class="alltime-footer-val pos">+70.21u</span></div>
+            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Net Total</span><span class="alltime-footer-val pos">+83.01u</span></div>
           </div>
         </div>
       </div>
@@ -809,53 +815,38 @@ window.addEventListener('resize', handleResize);
 handleResize();
 
 // ── DATA ──────────────────────────────────────────
-const todayPlays = [
-  {player:"Nathan MacKinnon", book:"Bet365", odds:120, fv:104, ev:"7.7%"},
-  {player:"Martin Necas",     book:"Bet365", odds:200, fv:180, ev:"7.2%"},
-  {player:"Sam Bennett",      book:"Bet365", odds:240, fv:229, ev:"3.4%"},
-  {player:"Cutter Gauthier",  book:"Bet365", odds:160, fv:154, ev:"2.5%"},
-  {player:"Kirill Kaprizov",  book:"Bet365", odds:135, fv:131, ev:"1.9%"},
-  {player:"Connor Bedard",    book:"Bet365", odds:145, fv:144, ev:"0.2%"},
-  {player:"Zach Hyman",       book:"Bet365", odds:null, fv:null, ev:null, cashedOut:true},
-  {player:"Leon Draisaitl",   book:"Bet365", odds:null, fv:null, ev:null, cashedOut:true},
-  {player:"Macklin Celebrini",book:"Bet365", odds:null, fv:null, ev:null, cashedOut:true},
-];
+const todayPlays = [];
 
 const yesterdayPlays = [
-  {player:"Bo Horvat",        book:"Bet365", odds:210, ev:"8.4%",  units:1, pl:2.1},
-  {player:"Cole Perfetti",    book:"Bet365", odds:350, ev:"6.9%",  units:1, pl:-1},
-  {player:"Mark Scheifele",   book:"Bet365", odds:210, ev:"-EV%",  units:0, pl:0},
-  {player:"Filip Forsberg",   book:"Bet365", odds:180, ev:"2.2%",  units:1, pl:1.8},
-  {player:"Kyle Connor",      book:"Bet365", odds:175, ev:"2.1%",  units:1, pl:1.75},
-  {player:"David Pastrnak",   book:"Bet365", odds:135, ev:"2%",    units:1, pl:-1},
-  {player:"Trevor Zegras",    book:"Bet365", odds:280, ev:"3%",    units:1, pl:-1},
-  {player:"Morgan Geekie",    book:"Bet365", odds:190, ev:"1.6%",  units:1, pl:1.9},
-  {player:"Nikita Kucherov",  book:"Bet365", odds:140, ev:"1.1%",  units:1, pl:-1},
-  {player:"Brady Tkachuk",    book:"Bet365", odds:190, ev:"0.3%",  units:1, pl:-1},
-  {player:"Mark Scheifele",   book:"Bet365", odds:220, ev:"2.7%",  units:1, pl:2.2},
+  {player:"Alex Tuch",         book:"Bet365", odds:220, ev:"2.9%", units:1,    pl:2.20},
+  {player:"Alex Debrincat",    book:"Bet365", odds:165, ev:"2.1%", units:1,    pl:-1.00},
+  {player:"Gabriel Landeskog", book:"Bet365", odds:250, ev:"—",    units:0,    pl:0},
+  {player:"Cale Makar",        book:"Bet365", odds:350, ev:"0.3%", units:1,    pl:-1.00},
+  {player:"Matt Boldy",        book:"Bet365", odds:180, ev:"0.2%", units:1,    pl:-1.00},
 ];
 
 const monthlyData = [
-  { name:"October 2025",  books:[{name:"Bet365",pl:9},{name:"FanDuel",pl:8.45},{name:"MGM",pl:5.30},{name:"BetRivers/Kambi",pl:-4.70},{name:"Fanatics",pl:-0.13},{name:"DraftKings",pl:0}], freeBets:-5, gross:17.92, net:12.92 },
+  { name:"October 2025",  books:[{name:"Bet365",pl:9.00},{name:"FanDuel",pl:8.45},{name:"MGM",pl:5.30},{name:"BetRivers/Kambi",pl:-4.70},{name:"Fanatics",pl:-0.13},{name:"DraftKings",pl:0}], freeBets:-5, gross:17.92, net:12.92 },
   { name:"November 2025", books:[{name:"Bet365",pl:-2.60},{name:"FanDuel",pl:2.25},{name:"MGM",pl:0.16},{name:"BetRivers/Kambi",pl:4.20},{name:"Fanatics",pl:3.65},{name:"DraftKings",pl:0}], freeBets:-2, gross:7.66, net:5.66 },
   { name:"December 2025", books:[{name:"Bet365",pl:9.30},{name:"FanDuel",pl:7.75},{name:"MGM",pl:6.71},{name:"BetRivers/Kambi",pl:2.50},{name:"Fanatics",pl:0.70},{name:"DraftKings",pl:0.80}], freeBets:0, gross:27.76, net:27.76 },
-  { name:"January 2026",  books:[{name:"Bet365",pl:1.60},{name:"FanDuel",pl:4.65},{name:"MGM",pl:7.35},{name:"BetRivers",pl:0},{name:"FN",pl:-3},{name:"DK",pl:1.62}], freeBets:-1, gross:12.22, net:11.22 },
-  { name:"February 2026", books:[{name:"Bet365",pl:6.85},{name:"FanDuel",pl:3.85},{name:"MGM",pl:0.70},{name:"BetRivers",pl:-1},{name:"FN",pl:0},{name:"DK",pl:-2}], freeBets:0, gross:8.40, net:8.40 },
+  { name:"January 2026",  books:[{name:"Bet365",pl:1.60},{name:"FanDuel",pl:4.65},{name:"MGM",pl:7.35},{name:"BetRivers",pl:0},{name:"Fanatics",pl:-3.00},{name:"DraftKings",pl:1.62}], freeBets:-1, gross:12.22, net:11.22 },
+  { name:"February 2026", books:[{name:"Bet365",pl:6.85},{name:"FanDuel",pl:3.85},{name:"MGM",pl:0.70},{name:"BetRivers",pl:-1.00},{name:"Fanatics",pl:0},{name:"DraftKings",pl:-2.00}], freeBets:0, gross:8.40, net:8.40 },
+  { name:"March 2026",    books:[{name:"Bet365",pl:19.50},{name:"FanDuel",pl:0.55},{name:"MGM",pl:0},{name:"BetRivers",pl:-2.00},{name:"Fanatics",pl:-1.00},{name:"DraftKings",pl:0}], freeBets:0, gross:17.05, net:17.05 },
 ];
 
 const top5 = [
-  {name:"Seth Jarvis",      pl:9.60,  wins:5, losses:0},
-  {name:"Zach Hyman",       pl:7.50,  wins:6, losses:3},
-  {name:"Cutter Gauthier",  pl:7.05,  wins:5, losses:4},
-  {name:"Connor Bedard",    pl:6.35,  wins:4, losses:1},
-  {name:"Martin Necas",     pl:6.20,  wins:4, losses:2},
+  {name:"Seth Jarvis",       pl:9.60,  wins:5, losses:0},
+  {name:"Cutter Gauthier",   pl:8.65,  wins:6, losses:4},
+  {name:"Martin Necas",      pl:8.20,  wins:5, losses:2},
+  {name:"Zach Hyman",        pl:7.50,  wins:6, losses:3},
+  {name:"Macklin Celebrini", pl:6.35,  wins:5, losses:2},
 ];
 const bottom5 = [
-  {name:"Sam Reinhart",      pl:-3.00,  wins:0, losses:3},
-  {name:"Tomas Hertl",       pl:-4.25,  wins:1, losses:6},
-  {name:"Valeri Nichushkin", pl:-5.00,  wins:0, losses:5},
-  {name:"Brady Tkachuk",     pl:-5.00,  wins:0, losses:5},
-  {name:"Matt Boldy",        pl:-8.35,  wins:1, losses:10},
+  {name:"Matt Boldy",         pl:-9.35, wins:1, losses:11},
+  {name:"Valeri Nichushkin",  pl:-5.00, wins:0, losses:5},
+  {name:"Brady Tkachuk",      pl:-5.00, wins:0, losses:5},
+  {name:"Tomas Hertl",        pl:-4.25, wins:1, losses:6},
+  {name:"Sam Reinhart",       pl:-3.00, wins:0, losses:3},
 ];
 
 // ── RENDER TODAY ──────────────────────────────────
@@ -863,6 +854,13 @@ function renderToday() {
   const tbody = document.getElementById('todayBody');
   const activeCount = todayPlays.filter(p => !p.cashedOut).length;
   document.getElementById('todayCount').textContent = activeCount + ' plays';
+
+  if (todayPlays.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="5" style="text-align:center;padding:40px 16px;font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;">No plays yet</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
   todayPlays.forEach((p, i) => {
     const tr = document.createElement('tr');
     tr.style.animationDelay = (i * 0.05) + 's';
@@ -1008,48 +1006,20 @@ function copyDiscord() {
 }
 
 // ── PARLAY DATA ───────────────────────────────────
-const parlays = [
-  {
-    book: "Bet365",
-    matchup: "STL Blues @ SJ Sharks",
-    odds: "+2600",
-    boost: "+30%",
-    legs: [
-      {player:"Will Smith",       prop:"ATGS o0.5"},
-      {player:"Dylan Holloway",   prop:"ATGS o0.5"},
-      {player:"Pavel Buchnevich", prop:"Shots on Goal o1.5"},
-      {player:"Jimmy Snuggerud",  prop:"Shots on Goal u2.5"},
-    ]
-  },
-  {
-    book: "BetMGM",
-    matchup: "Multi-game",
-    odds: "+3561",
-    boost: "+15%",
-    legs: [
-      {player:"Sam Rinzel",        prop:"Shots on Goal o1.5"},
-      {player:"Sebastian Aho",     prop:"ATGS o0.5"},
-      {player:"Juraj Slafkovsky",  prop:"ATGS o0.5"},
-      {player:"Matt Boldy",        prop:"ATGS o0.5"},
-    ]
-  },
-  {
-    book: "DraftKings",
-    matchup: "Multi-game",
-    odds: "+4169",
-    boost: "+20%",
-    legs: [
-      {player:"Joel Eriksson Ek", prop:"ATGS o0.5"},
-      {player:"Seth Jarvis",      prop:"ATGS o0.5"},
-      {player:"Tyler Bertuzzi",   prop:"ATGS o0.5"},
-    ]
-  },
-];
+const parlays = [];
 
 // ── RENDER PARLAYS ────────────────────────────────
 function renderParlays() {
   const list = document.getElementById('parlayList');
   document.getElementById('parlayCount').textContent = parlays.length + (parlays.length === 1 ? ' parlay' : ' parlays');
+
+  if (parlays.length === 0) {
+    list.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:1px;text-transform:uppercase;padding:40px 20px;text-align:center;">
+      <div style="font-size:1.8rem;opacity:0.3;">🎰</div>
+      <div>No parlays yet</div>
+    </div>`;
+    return;
+  }
 
   parlays.forEach(p => {
     const card = document.createElement('div');
@@ -1089,5 +1059,10 @@ renderMonthly();
 renderPlayers();
 renderParlays();
 </script>
+
+<div style="text-align:center; padding:18px 24px; font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:rgba(100,116,139,0.6); letter-spacing:0.8px; line-height:1.8; border-top:1px solid var(--border); margin-top:8px;">
+  FOR ENTERTAINMENT PURPOSES ONLY &nbsp;·&nbsp; NOT AFFILIATED WITH THE NHL OR ANY SPORTSBOOK &nbsp;·&nbsp; PAST RESULTS DO NOT GUARANTEE FUTURE PERFORMANCE &nbsp;·&nbsp; GAMBLE RESPONSIBLY &nbsp;·&nbsp; IF YOU OR SOMEONE YOU KNOW HAS A GAMBLING PROBLEM, CALL 1-800-GAMBLER
+</div>
+
 </body>
 </html>
