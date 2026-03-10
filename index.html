@@ -53,7 +53,7 @@ body {
   display:flex; align-items:center; justify-content:space-between;
   padding:0 28px;
   padding-top:env(safe-area-inset-top, 0px);
-  height:calc(72px + env(safe-area-inset-top, 0px));
+  height:calc(84px + env(safe-area-inset-top, 0px));
   background:var(--navy);
   gap:20px;
   z-index:20;
@@ -63,10 +63,10 @@ body {
 .brand-name { font-weight:800; font-size:1.4rem; letter-spacing:1.5px; color:#fff; }
 .brand-sub  { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:rgba(255,255,255,0.4); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
 
-.topbar-stats { display:flex; align-items:center; gap:10px; }
-.ts-chip { display:flex; flex-direction:column; align-items:center; padding:8px 18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:10px; }
-.ts-chip .lbl { font-family:'JetBrains Mono',monospace; font-size:0.55rem; color:rgba(255,255,255,0.4); letter-spacing:1.5px; text-transform:uppercase; }
-.ts-chip .val { font-weight:700; font-size:1.15rem; color:#fff; line-height:1.25; margin-top:1px; }
+.topbar-stats { display:flex; align-items:center; gap:12px; }
+.ts-chip { display:flex; flex-direction:column; align-items:center; padding:10px 22px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:10px; }
+.ts-chip .lbl { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:rgba(255,255,255,0.4); letter-spacing:1.5px; text-transform:uppercase; }
+.ts-chip .val { font-weight:700; font-size:1.55rem; color:#fff; line-height:1.25; margin-top:2px; }
 .ts-chip .val.up  { color:#4ade80; }
 .ts-chip .val.cy  { color:#67e8f9; }
 .ts-chip .val.amb { color:#fbbf24; }
@@ -240,11 +240,11 @@ body {
 .today-scroll::-webkit-scrollbar-thumb { background:var(--s3); }
 
 table.plays { width:100%; border-collapse:collapse; table-layout:fixed; }
-table.plays col.col-player { width:38%; }
-table.plays col.col-book   { width:22%; }
-table.plays col.col-odds   { width:18%; }
-table.plays col.col-fv     { width:12%; }
-table.plays col.col-ev     { width:10%; }
+table.plays col.col-player { width:34%; }
+table.plays col.col-book   { width:20%; }
+table.plays col.col-odds   { width:16%; }
+table.plays col.col-fv     { width:14%; }
+table.plays col.col-ev     { width:16%; }
 table.plays thead th {
   font-family:'JetBrains Mono',monospace; font-size:0.63rem; color:var(--dim);
   letter-spacing:1.2px; text-transform:uppercase; text-align:left;
@@ -254,7 +254,7 @@ table.plays thead th {
 table.plays tbody tr { border-bottom:1px solid var(--b2); transition:background 0.1s; animation:fadeUp 0.22s ease both; }
 table.plays tbody tr:active { background:var(--blue-lt); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
-table.plays td { padding:9px 14px; vertical-align:middle; }
+table.plays td { padding:7px 12px; vertical-align:middle; }
 
 .player   { font-weight:700; font-size:0.9rem; color:var(--navy); }
 .book-chip { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:0.6rem; padding:2px 7px; border-radius:5px; background:var(--blue-lt); border:1px solid var(--blue-bd); color:var(--blue); white-space:nowrap; }
@@ -442,7 +442,7 @@ table.plays td { padding:9px 14px; vertical-align:middle; }
   .topbar-right { display:none; }
   .ts-chip { padding:7px 14px; }
   .ts-chip .lbl { display:none; }
-  .ts-chip .val { font-size:1.2rem; margin-top:0; }
+  .ts-chip .val { font-size:1.45rem; margin-top:0; }
 
   /* Daily: Today (wider) + Parlays top row, Yesterday full width bottom */
   .daily-layout {
@@ -454,22 +454,21 @@ table.plays td { padding:9px 14px; vertical-align:middle; }
   #paneParlays { grid-column:2; grid-row:1; }
   #paneYest    { grid-column:1 / span 2; grid-row:2; }
 
-  /* Today table: fixed columns, hide FV, compact */
+  /* Today table: show player, book, odds, ev — hide FV only */
   table.plays { table-layout:fixed; }
-  table.plays col.col-player { width:42%; }
-  table.plays col.col-book   { width:0; }
-  table.plays col.col-odds   { width:28%; }
+  table.plays col.col-player { width:36%; }
+  table.plays col.col-book   { width:22%; }
+  table.plays col.col-odds   { width:20%; }
   table.plays col.col-fv     { width:0; }
-  table.plays col.col-ev     { width:30%; }
+  table.plays col.col-ev     { width:22%; }
   .col-fv { display:none; }
-  /* Hide book column on tablet to free space */
-  table.plays th:nth-child(2),
-  table.plays td:nth-child(2) { display:none; }
-  table.plays td { padding:11px 10px; }
-  table.plays thead th { padding:8px 10px; font-size:0.6rem; }
-  .player { font-size:0.9rem; }
-  .odds-num { font-size:0.9rem; }
-  .ev-chip { font-size:0.7rem; }
+  table.plays th:nth-child(4),
+  table.plays td:nth-child(4) { display:none; }
+  table.plays td { padding:7px 10px; }
+  table.plays thead th { padding:6px 10px; font-size:0.6rem; }
+  .player { font-size:0.88rem; }
+  .odds-num { font-size:0.88rem; }
+  .ev-chip { font-size:0.68rem; padding:3px 7px; }
 
   /* Yesterday full-width: 2-col results grid */
   #paneYest .yest-summary {
@@ -495,11 +494,18 @@ table.plays td { padding:9px 14px; vertical-align:middle; }
   .brand-sub { display:none; }
   .topbar-right { display:none; }
   .ts-chip { padding:6px 12px; }
-  .ts-chip .val { font-size:1.35rem; }
+  .ts-chip .val { font-size:1.55rem; }
 
   .daily-layout { grid-template-columns:1fr 1fr 1fr; }
-  table.plays td { padding:10px 10px; }
+  table.plays col.col-player { width:34%; }
+  table.plays col.col-book   { width:20%; }
+  table.plays col.col-odds   { width:16%; }
+  table.plays col.col-fv     { width:14%; }
+  table.plays col.col-ev     { width:16%; }
+  table.plays td { padding:7px 10px; }
   .col-fv { display:none; }
+  table.plays col.col-fv { width:0; }
+  table.plays th:nth-child(4), table.plays td:nth-child(4) { display:none; }
   .player { font-size:0.88rem; }
   .odds-num { font-size:0.88rem; }
   .result-info { padding:9px 10px; }
@@ -580,10 +586,10 @@ table.plays td { padding:9px 14px; vertical-align:middle; }
   <div class="topbar-stats">
     <div class="ts-chip"><span class="lbl">Personal</span><span class="val up">+91.01u</span></div>
     <div class="ts-chip"><span class="lbl">Total</span><span class="val cy">+83.01u</span></div>
-    <div class="ts-chip"><span class="lbl">Daily</span><span class="val" style="color:#f87171">−0.80u</span></div>
+    <div class="ts-chip"><span class="lbl">Daily</span><span class="val" style="color:rgba(255,255,255,0.5)">0.00u</span></div>
   </div>
   <div class="topbar-right">
-    <div class="date-pill">MON · MAR 09 · 2026</div>
+    <div class="date-pill">TUE · MAR 10 · 2026</div>
     <div class="live-dot">LIVE</div>
   </div>
 </div>
@@ -654,7 +660,7 @@ table.plays td { padding:9px 14px; vertical-align:middle; }
           <div class="pane-title">
             <div class="icon-wrap green">✓</div>
             <h2>Yesterday</h2>
-            <span class="badge">MAR 08</span>
+            <span class="badge">MAR 09</span>
           </div>
           <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
         </div>
@@ -815,15 +821,24 @@ window.addEventListener('resize', handleResize);
 handleResize();
 
 // ── DATA ──────────────────────────────────────────
-const todayPlays = [];
-
-const yesterdayPlays = [
-  {player:"Alex Tuch",         book:"Bet365", odds:220, ev:"2.9%", units:1,    pl:2.20},
-  {player:"Alex Debrincat",    book:"Bet365", odds:165, ev:"2.1%", units:1,    pl:-1.00},
-  {player:"Gabriel Landeskog", book:"Bet365", odds:250, ev:"—",    units:0,    pl:0},
-  {player:"Cale Makar",        book:"Bet365", odds:350, ev:"0.3%", units:1,    pl:-1.00},
-  {player:"Matt Boldy",        book:"Bet365", odds:180, ev:"0.2%", units:1,    pl:-1.00},
+const todayPlays = [
+  {player:"Bo Horvat",         book:"Bet365",    odds:175, fv:158, ev:"6.5%"},
+  {player:"Dylan Guenther",    book:"Bet365",    odds:220, fv:205, ev:"5.0%"},
+  {player:"Cutter Gauthier",   book:"BetRivers", odds:185, fv:167, ev:"6.8%"},
+  {player:"Josh Norris",       book:"Bet365",    odds:300, fv:287, ev:"3.3%"},
+  {player:"Robert Thomas",     book:"Bet365",    odds:350, fv:339, ev:"2.5%"},
+  {player:"Carter Verhaeghe",  book:"Bet365",    odds:240, fv:233, ev:"2.2%"},
+  {player:"Adrian Kempe",      book:"Bet365",    odds:190, fv:184, ev:"2.1%"},
+  {player:"Juraj Slafkovsky",  book:"Bet365",    odds:210, fv:205, ev:"1.7%"},
+  {player:"Cole Perfetti",     book:"BetRivers", odds:280, fv:276, ev:"1.0%"},
+  {player:"Sam Bennett",       book:"Bet365",    odds:250, fv:247, ev:"0.9%"},
+  {player:"Wyatt Johnston",    book:"Bet365",    odds:165, fv:163, ev:"0.7%"},
+  {player:"Martin Necas",      book:"FanDuel",   odds:140, fv:139, ev:"0.5%"},
+  {player:"Matthew Tkachuk",   book:"Bet365",    odds:180, fv:179, ev:"0.4%"},
+  {player:"Filip Forsberg",    book:"MGM",       odds:170, fv:169, ev:"0.3%"},
 ];
+
+const yesterdayPlays = [];
 
 const monthlyData = [
   { name:"October 2025",  books:[{name:"Bet365",pl:9.00},{name:"FanDuel",pl:8.45},{name:"MGM",pl:5.30},{name:"BetRivers/Kambi",pl:-4.70},{name:"Fanatics",pl:-0.13},{name:"DraftKings",pl:0}], freeBets:-5, gross:17.92, net:12.92 },
@@ -1060,7 +1075,7 @@ renderPlayers();
 renderParlays();
 </script>
 
-<div style="text-align:center; padding:18px 24px; font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:rgba(100,116,139,0.6); letter-spacing:0.8px; line-height:1.8; border-top:1px solid var(--border); margin-top:8px;">
+<div style="text-align:center; padding:18px 24px; font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:rgba(100,116,139,0.85); letter-spacing:0.8px; line-height:1.8; border-top:1px solid var(--border); margin-top:8px;">
   FOR ENTERTAINMENT PURPOSES ONLY &nbsp;·&nbsp; NOT AFFILIATED WITH THE NHL OR ANY SPORTSBOOK &nbsp;·&nbsp; PAST RESULTS DO NOT GUARANTEE FUTURE PERFORMANCE &nbsp;·&nbsp; GAMBLE RESPONSIBLY &nbsp;·&nbsp; IF YOU OR SOMEONE YOU KNOW HAS A GAMBLING PROBLEM, CALL 1-800-GAMBLER
 </div>
 
