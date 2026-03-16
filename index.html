@@ -740,21 +740,21 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
             <div class="alltime-title">Full Season Performance</div>
               <div class="alltime-sub">CIRCA · ESPN · PN</div>
             </div>
-            <span class="alltime-badge">+83.01u Net</span>
+            <span class="alltime-badge">+83.96u Net</span>
           </div>
           <div class="alltime-books">
-            <div class="alltime-book-row"><span class="alltime-book-name">Bet365</span><span class="alltime-book-pl pos">+43.65</span></div>
-            <div class="alltime-book-row"><span class="alltime-book-name">FanDuel</span><span class="alltime-book-pl pos">+27.50</span></div>
-            <div class="alltime-book-row"><span class="alltime-book-name">MGM</span><span class="alltime-book-pl pos">+20.22</span></div>
-            <div class="alltime-book-row"><span class="alltime-book-name">BetRivers/Kambi</span><span class="alltime-book-pl neg">−1.00</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">Bet365</span><span class="alltime-book-pl pos">+46.75</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">FanDuel</span><span class="alltime-book-pl pos">+28.90</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">MGM</span><span class="alltime-book-pl pos">+18.22</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">BetRivers/Kambi</span><span class="alltime-book-pl neg">−3.00</span></div>
             <div class="alltime-book-row"><span class="alltime-book-name">Fanatics</span><span class="alltime-book-pl pos">+0.22</span></div>
-            <div class="alltime-book-row"><span class="alltime-book-name">DraftKings</span><span class="alltime-book-pl pos">+0.42</span></div>
+            <div class="alltime-book-row"><span class="alltime-book-name">DraftKings</span><span class="alltime-book-pl pos">+0.87</span></div>
           </div>
           <div class="fb-row"><span class="fb-lbl">Free Bets</span><span class="fb-val">−8.00</span></div>
           <div class="alltime-footer">
-            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Gross</span><span class="alltime-footer-val pos">+91.01u</span></div>
+            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Gross</span><span class="alltime-footer-val pos">+91.96u</span></div>
             <div class="alltime-footer-item"><span class="alltime-footer-lbl">Free Bets</span><span class="alltime-footer-val" style="color:#fbbf24">−8.00u</span></div>
-            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Net Total</span><span class="alltime-footer-val pos">+83.01u</span></div>
+            <div class="alltime-footer-item"><span class="alltime-footer-lbl">Net Total</span><span class="alltime-footer-val pos">+83.96u</span></div>
           </div>
         </div>
       </div>
@@ -880,22 +880,22 @@ const monthlyData = [
   { name:"December 2025", books:[{name:"Bet365",pl:9.30},{name:"FanDuel",pl:7.75},{name:"MGM",pl:6.71},{name:"BetRivers/Kambi",pl:2.50},{name:"Fanatics",pl:0.70},{name:"DraftKings",pl:0.80}], freeBets:0, gross:27.76, net:27.76 },
   { name:"January 2026",  books:[{name:"Bet365",pl:1.60},{name:"FanDuel",pl:4.65},{name:"MGM",pl:7.35},{name:"BetRivers",pl:0},{name:"Fanatics",pl:-3.00},{name:"DraftKings",pl:1.62}], freeBets:-1, gross:12.22, net:11.22 },
   { name:"February 2026", books:[{name:"Bet365",pl:6.85},{name:"FanDuel",pl:3.85},{name:"MGM",pl:0.70},{name:"BetRivers",pl:-1.00},{name:"Fanatics",pl:0},{name:"DraftKings",pl:-2.00}], freeBets:0, gross:8.40, net:8.40 },
-  { name:"March 2026",    books:[{name:"Bet365",pl:19.50},{name:"FanDuel",pl:0.55},{name:"MGM",pl:0},{name:"BetRivers",pl:-2.00},{name:"Fanatics",pl:-1.00},{name:"DraftKings",pl:0}], freeBets:0, gross:17.05, net:17.05 },
+  { name:"March 2026",    books:[{name:"Bet365",pl:22.60},{name:"FanDuel",pl:1.95},{name:"MGM",pl:-2.00},{name:"BetRivers",pl:-4.00},{name:"Fanatics",pl:-1.00},{name:"DraftKings",pl:0.45}], freeBets:0, gross:18.00, net:18.00 },
 ];
 
 const top5 = [
+  {name:"Martin Necas",      pl:9.60,  wins:6, losses:2},
   {name:"Seth Jarvis",       pl:9.60,  wins:5, losses:0},
-  {name:"Cutter Gauthier",   pl:8.65,  wins:6, losses:4},
-  {name:"Martin Necas",      pl:8.20,  wins:5, losses:2},
-  {name:"Zach Hyman",        pl:7.50,  wins:6, losses:3},
+  {name:"Zach Hyman",        pl:9.00,  wins:7, losses:3},
+  {name:"Cutter Gauthier",   pl:7.65,  wins:6, losses:5},
   {name:"Macklin Celebrini", pl:6.35,  wins:5, losses:2},
 ];
 const bottom5 = [
-  {name:"Matt Boldy",         pl:-9.35, wins:1, losses:11},
+  {name:"Matt Boldy",         pl:-7.85, wins:2, losses:11},
   {name:"Valeri Nichushkin",  pl:-5.00, wins:0, losses:5},
   {name:"Brady Tkachuk",      pl:-5.00, wins:0, losses:5},
   {name:"Tomas Hertl",        pl:-4.25, wins:1, losses:6},
-  {name:"Sam Reinhart",       pl:-3.00, wins:0, losses:3},
+  {name:"Adrian Kempe",       pl:-4.00, wins:0, losses:4},
 ];
 
 // ── RENDER TODAY ──────────────────────────────────
