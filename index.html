@@ -67,6 +67,7 @@ body {
 .ts-chip { display:flex; flex-direction:column; align-items:center; padding:10px 22px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); border-radius:10px; }
 .ts-chip .lbl { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:rgba(255,255,255,0.4); letter-spacing:1.5px; text-transform:uppercase; }
 .ts-chip .val { font-weight:700; font-size:1.55rem; color:#fff; line-height:1.25; margin-top:2px; }
+.ts-chip.ts-divider { width:1px; padding:0; background:rgba(255,255,255,0.15); border:none; border-radius:0; min-height:28px; }
 .ts-chip .val.up  { color:#4ade80; }
 .ts-chip .val.cy  { color:#67e8f9; }
 .ts-chip .val.amb { color:#fbbf24; }
@@ -139,7 +140,7 @@ body {
 .parlay-scroll::-webkit-scrollbar-thumb { background:var(--s3); }
 
 .parlay-card {
-  margin:10px 12px;
+  margin:8px 12px;
   background:var(--white);
   border:1px solid var(--border);
   border-radius:12px;
@@ -149,7 +150,7 @@ body {
 
 .parlay-card-header {
   display:flex; align-items:center; justify-content:space-between;
-  padding:8px 12px 7px;
+  padding:7px 12px 6px;
   background:var(--s2);
   border-bottom:1px solid var(--border);
   gap:8px;
@@ -179,7 +180,7 @@ body {
   grid-template-columns:18px 1fr auto;
   align-items:center;
   gap:8px;
-  padding:7px 12px;
+  padding:5px 12px;
   border-bottom:1px solid var(--b2);
 }
 .parlay-leg:last-child { border-bottom:none; }
@@ -194,11 +195,11 @@ body {
   flex-shrink:0;
 }
 
-.parlay-leg-info { display:flex; flex-direction:column; gap:1px; }
-.parlay-leg-player { font-weight:700; font-size:0.84rem; color:var(--navy); }
+.parlay-leg-info { display:flex; flex-direction:column; gap:0px; }
+.parlay-leg-player { font-weight:700; font-size:0.78rem; color:var(--navy); }
 .parlay-leg-prop {
   font-family:'JetBrains Mono',monospace;
-  font-size:0.56rem; color:var(--mid); letter-spacing:0.3px;
+  font-size:0.52rem; color:var(--mid); letter-spacing:0.3px;
 }
 
 /* Mobile sub-tabs: hidden on desktop, shown only on mobile via media query */
@@ -216,10 +217,31 @@ body {
 }
 .sub-tab-btn.active { color:var(--navy); border-bottom-color:var(--blue); }
 
-.pane { background:var(--bg); display:flex; flex-direction:column; overflow:hidden; min-height:0; }
+.pane { background:var(--bg); display:flex; flex-direction:column; overflow:hidden; min-height:0; transition: all 0.25s ease; }
 
 /* Mobile: hide inactive pane */
 .pane.mobile-hidden { display:none; }
+
+/* Yesterday collapsed state */
+#paneYest.collapsed { flex:0 0 auto !important; min-height:0 !important; }
+#paneYest.collapsed .yest-summary,
+#paneYest.collapsed .yest-scroll { display:none; }
+#paneYest.collapsed { grid-row: auto !important; }
+
+/* When yesterday collapsed on desktop: today + parlays expand */
+.daily-layout.yest-collapsed { grid-template-columns: 1fr 1fr; }
+.daily-layout.yest-collapsed #paneToday   { grid-column:1; grid-row:1; }
+.daily-layout.yest-collapsed #paneParlays { grid-column:2; grid-row:1; }
+.daily-layout.yest-collapsed #paneYest    { grid-column:1 / span 2; grid-row:2; min-height:0; }
+
+.yest-toggle {
+  background:none; border:none; cursor:pointer;
+  font-family:'JetBrains Mono',monospace; font-size:0.62rem;
+  color:var(--mid); letter-spacing:1px; padding:3px 8px;
+  border-radius:4px; background:var(--s2); border:1px solid var(--border);
+  display:flex; align-items:center; gap:4px; transition:all 0.15s;
+}
+.yest-toggle:hover { background:var(--s3); color:var(--navy); }
 
 .pane-head {
   padding:9px 14px 8px; background:var(--white);
@@ -432,29 +454,33 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
    RESPONSIVE BREAKPOINTS
 ═══════════════════════════════ */
 
-/* TABLET PORTRAIT (641px–900px) */
-@media (min-width: 641px) and (max-width: 900px) {
+/* TABLET PORTRAIT (641px–820px) — includes Tab S7 portrait (800px) */
+@media (min-width: 641px) and (max-width: 820px) {
   /* Topbar */
-  .topbar { padding:0 16px; gap:10px; height:60px; }
-  .brand-icon { width:34px; height:34px; font-size:16px; }
-  .brand-name { font-size:1.1rem; }
+  .topbar { padding:0 16px; gap:10px; height:64px; }
+  .brand-icon { width:36px; height:36px; font-size:17px; }
+  .brand-name { font-size:1.15rem; }
   .brand-sub { display:none; }
   .topbar-right { display:none; }
   .ts-chip { padding:7px 14px; }
-  .ts-chip .lbl { display:none; }
-  .ts-chip .val { font-size:1.45rem; margin-top:0; }
+  .ts-chip .lbl { display:block; font-size:0.5rem; letter-spacing:1px; }
+  .ts-chip .val { font-size:1.25rem; margin-top:1px; }
 
   /* Daily: Today (wider) + Parlays top row, Yesterday full width bottom */
   .daily-layout {
     grid-template-columns: 55% 45%;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr auto;
     height:100%;
   }
   #paneToday   { grid-column:1; grid-row:1; }
   #paneParlays { grid-column:2; grid-row:1; }
   #paneYest    { grid-column:1 / span 2; grid-row:2; }
+  .daily-layout.yest-collapsed { grid-template-columns:55% 45%; }
+  .daily-layout.yest-collapsed #paneToday   { grid-column:1; grid-row:1; }
+  .daily-layout.yest-collapsed #paneParlays { grid-column:2; grid-row:1; }
+  .daily-layout.yest-collapsed #paneYest    { grid-column:1 / span 2; grid-row:2; }
 
-  /* Today table: show player, book, odds, ev — hide FV only */
+  /* Today table: Player, Book, Odds, EV — hide FV */
   table.plays { table-layout:fixed; }
   table.plays col.col-player { width:36%; }
   table.plays col.col-book   { width:22%; }
@@ -464,11 +490,11 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
   .col-fv { display:none; }
   table.plays th:nth-child(4),
   table.plays td:nth-child(4) { display:none; }
-  table.plays td { padding:7px 10px; }
-  table.plays thead th { padding:6px 10px; font-size:0.6rem; }
-  .player { font-size:0.88rem; }
-  .odds-num { font-size:0.88rem; }
-  .ev-chip { font-size:0.68rem; padding:3px 7px; }
+  table.plays td { padding:8px 10px; }
+  table.plays thead th { padding:7px 10px; font-size:0.6rem; }
+  .player { font-size:0.9rem; }
+  .odds-num { font-size:0.9rem; }
+  .ev-chip { font-size:0.7rem; padding:3px 8px; }
 
   /* Yesterday full-width: 2-col results grid */
   #paneYest .yest-summary {
@@ -488,28 +514,37 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
   .players-grid { grid-template-columns:1fr 1fr; }
 }
 
-/* TABLET LANDSCAPE (901px–1100px) */
-@media (min-width: 901px) and (max-width: 1100px) {
+/* TABLET LANDSCAPE (821px–1366px) — includes Tab S7 landscape (1280px) */
+@media (min-width: 821px) and (max-width: 1366px) {
   .topbar { padding:0 20px; gap:14px; }
   .brand-sub { display:none; }
-  .topbar-right { display:none; }
-  .ts-chip { padding:6px 12px; }
-  .ts-chip .val { font-size:1.55rem; }
+  .topbar-right { display:flex; }
+  .ts-chip { padding:7px 16px; }
+  .ts-chip .lbl { display:block; font-size:0.52rem; letter-spacing:1px; }
+  .ts-chip .val { font-size:1.45rem; }
 
+  /* Full 3-col layout */
   .daily-layout { grid-template-columns:1fr 1fr 1fr; }
-  table.plays col.col-player { width:34%; }
+  .daily-layout.yest-collapsed { grid-template-columns:1fr 1fr; }
+  .daily-layout.yest-collapsed #paneToday   { grid-column:1; grid-row:1; }
+  .daily-layout.yest-collapsed #paneParlays { grid-column:2; grid-row:1; }
+  .daily-layout.yest-collapsed #paneYest    { grid-column:1 / span 2; grid-row:2; }
+
+  /* Show all columns including FV */
+  table.plays col.col-player { width:32%; }
   table.plays col.col-book   { width:20%; }
   table.plays col.col-odds   { width:16%; }
-  table.plays col.col-fv     { width:14%; }
+  table.plays col.col-fv     { width:16%; }
   table.plays col.col-ev     { width:16%; }
-  table.plays td { padding:7px 10px; }
-  .col-fv { display:none; }
-  table.plays col.col-fv { width:0; }
-  table.plays th:nth-child(4), table.plays td:nth-child(4) { display:none; }
-  .player { font-size:0.88rem; }
-  .odds-num { font-size:0.88rem; }
-  .result-info { padding:9px 10px; }
-  .result-pl { padding:0 10px 0 4px; }
+  .col-fv { display:table-cell; }
+  table.plays th:nth-child(4), table.plays td:nth-child(4) { display:table-cell; }
+  table.plays td { padding:8px 12px; }
+  table.plays thead th { padding:7px 12px; font-size:0.62rem; }
+  .player { font-size:0.92rem; }
+  .odds-num { font-size:0.92rem; }
+  .ev-chip { font-size:0.7rem; }
+  .result-info { padding:9px 12px; }
+  .result-pl { padding:0 12px 0 4px; }
 
   .monthly-grid { grid-template-columns:1fr 1fr; }
   .players-grid { grid-template-columns:1fr 1fr; }
@@ -584,12 +619,13 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
     </div>
   </div>
   <div class="topbar-stats">
-    <div class="ts-chip"><span class="lbl">Personal</span><span class="val up">+91.01u</span></div>
-    <div class="ts-chip"><span class="lbl">Total</span><span class="val cy">+83.01u</span></div>
-    <div class="ts-chip"><span class="lbl">Daily</span><span class="val" style="color:rgba(255,255,255,0.5)">0.00u</span></div>
+    <div class="ts-chip"><span class="lbl">Gross</span><span class="val up">+91.96u</span></div>
+    <div class="ts-chip"><span class="lbl">Net</span><span class="val cy">+83.96u</span></div>
+    <div class="ts-chip ts-divider"></div>
+    <div class="ts-chip"><span class="lbl">Yesterday</span><span class="val up">+7.05u</span></div>
   </div>
   <div class="topbar-right">
-    <div class="date-pill">TUE · MAR 10 · 2026</div>
+    <div class="date-pill">MON · MAR 16 · 2026</div>
     <div class="live-dot">LIVE</div>
   </div>
 </div>
@@ -660,9 +696,12 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
           <div class="pane-title">
             <div class="icon-wrap green">✓</div>
             <h2>Yesterday</h2>
-            <span class="badge">MAR 09</span>
+            <span class="badge">MAR 15</span>
           </div>
-          <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
+            <button class="yest-toggle" id="yestToggle" onclick="toggleYest()">▲ HIDE</button>
+          </div>
         </div>
         <div class="yest-summary">
           <div class="sum-stat"><div class="sv green" id="y-wins">—</div><div class="sl">Wins</div></div>
@@ -822,23 +861,18 @@ handleResize();
 
 // ── DATA ──────────────────────────────────────────
 const todayPlays = [
-  {player:"Bo Horvat",         book:"Bet365",    odds:175, fv:158, ev:"6.5%"},
-  {player:"Dylan Guenther",    book:"Bet365",    odds:220, fv:205, ev:"5.0%"},
-  {player:"Cutter Gauthier",   book:"BetRivers", odds:185, fv:167, ev:"6.8%"},
-  {player:"Josh Norris",       book:"Bet365",    odds:300, fv:287, ev:"3.3%"},
-  {player:"Robert Thomas",     book:"Bet365",    odds:350, fv:339, ev:"2.5%"},
-  {player:"Carter Verhaeghe",  book:"Bet365",    odds:240, fv:233, ev:"2.2%"},
-  {player:"Adrian Kempe",      book:"Bet365",    odds:190, fv:184, ev:"2.1%"},
-  {player:"Juraj Slafkovsky",  book:"Bet365",    odds:210, fv:205, ev:"1.7%"},
-  {player:"Cole Perfetti",     book:"BetRivers", odds:280, fv:276, ev:"1.0%"},
-  {player:"Sam Bennett",       book:"Bet365",    odds:250, fv:247, ev:"0.9%"},
-  {player:"Wyatt Johnston",    book:"Bet365",    odds:165, fv:163, ev:"0.7%"},
-  {player:"Martin Necas",      book:"FanDuel",   odds:140, fv:139, ev:"0.5%"},
-  {player:"Matthew Tkachuk",   book:"Bet365",    odds:180, fv:179, ev:"0.4%"},
-  {player:"Filip Forsberg",    book:"MGM",       odds:170, fv:169, ev:"0.3%"},
+  {player:"David Pastrnak", book:"Bet365",  odds:150, fv:147, ev:"1.1%"},
+  {player:"Brock Nelson",   book:"FanDuel", odds:200, fv:197, ev:"1.1%"},
+  {player:"Martin Necas",   book:"FanDuel", odds:125, fv:123, ev:"0.9%"},
 ];
 
-const yesterdayPlays = [];
+const yesterdayPlays = [
+  {player:"Juraj Slafkovsky", book:"Bet365", odds:200, ev:"4.6%", units:1, pl:-1.00},
+  {player:"Bobby McCann",     book:"Bet365", odds:375, ev:"3.0%", units:1, pl:3.75},
+  {player:"Leon Draisaitl",   book:"Bet365", odds:125, ev:"2.6%", units:1, pl:1.25},
+  {player:"Zach Hyman",       book:"Bet365", odds:150, ev:"1.9%", units:1, pl:1.50},
+  {player:"Kyle Connor",      book:"Bet365", odds:155, ev:"1.2%", units:1, pl:1.55},
+];
 
 const monthlyData = [
   { name:"October 2025",  books:[{name:"Bet365",pl:9.00},{name:"FanDuel",pl:8.45},{name:"MGM",pl:5.30},{name:"BetRivers/Kambi",pl:-4.70},{name:"Fanatics",pl:-0.13},{name:"DraftKings",pl:0}], freeBets:-5, gross:17.92, net:12.92 },
@@ -887,7 +921,7 @@ function renderToday() {
         <td colspan="3" style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--dim);letter-spacing:1px;padding-left:4px;">CASHED OUT</td>`;
     } else {
       tr.innerHTML = `
-        <td><span class="player">${p.player}</span></td>
+        <td><span class="player">${p.player}${p.noCashout ? ' <span style="font-family:\'JetBrains Mono\',monospace;font-size:0.48rem;color:#f87171;letter-spacing:0.5px;vertical-align:middle;">🔒</span>' : ''}</span></td>
         <td><span class="book-chip">${p.book}</span></td>
         <td><span class="odds-num">${fmt(p.odds)}</span></td>
         <td class="col-fv"><span class="fv-num">${fmt(p.fv)}</span></td>
@@ -1052,7 +1086,7 @@ function renderParlays() {
     card.innerHTML = `
       <div class="parlay-card-header">
         <div>
-          <div class="parlay-odds">${p.odds}</div>
+          <div class="parlay-odds">+${p.odds}</div>
           <div class="parlay-matchup">${p.matchup}</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;">
@@ -1064,6 +1098,16 @@ function renderParlays() {
 
     list.appendChild(card);
   });
+}
+
+// ── YESTERDAY COLLAPSE ────────────────────────────
+function toggleYest() {
+  const pane = document.getElementById('paneYest');
+  const layout = document.querySelector('.daily-layout');
+  const btn = document.getElementById('yestToggle');
+  const collapsed = pane.classList.toggle('collapsed');
+  layout.classList.toggle('yest-collapsed', collapsed);
+  btn.textContent = collapsed ? '▼ SHOW' : '▲ HIDE';
 }
 
 // ── INIT ──────────────────────────────────────────
