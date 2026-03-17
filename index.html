@@ -619,13 +619,13 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
     </div>
   </div>
   <div class="topbar-stats">
-    <div class="ts-chip"><span class="lbl">Gross</span><span class="val up">+91.96u</span></div>
-    <div class="ts-chip"><span class="lbl">Net</span><span class="val cy">+83.96u</span></div>
+    <div class="ts-chip"><span class="lbl">Gross</span><span class="val up">+91.46u</span></div>
+    <div class="ts-chip"><span class="lbl">Net</span><span class="val cy">+83.46u</span></div>
     <div class="ts-chip ts-divider"></div>
-    <div class="ts-chip"><span class="lbl">Yesterday</span><span class="val up">+7.05u</span></div>
+    <div class="ts-chip"><span class="lbl">Yesterday</span><span class="val" style="color:#f87171">−0.50u</span></div>
   </div>
   <div class="topbar-right">
-    <div class="date-pill">MON · MAR 16 · 2026</div>
+    <div class="date-pill">TUE · MAR 17 · 2026</div>
     <div class="live-dot">LIVE</div>
   </div>
 </div>
@@ -696,7 +696,7 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
           <div class="pane-title">
             <div class="icon-wrap green">✓</div>
             <h2>Yesterday</h2>
-            <span class="badge">MAR 15</span>
+            <span class="badge">MAR 16</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
@@ -861,17 +861,19 @@ handleResize();
 
 // ── DATA ──────────────────────────────────────────
 const todayPlays = [
-  {player:"David Pastrnak", book:"Bet365",  odds:150, fv:147, ev:"1.1%"},
-  {player:"Brock Nelson",   book:"FanDuel", odds:200, fv:197, ev:"1.1%"},
-  {player:"Martin Necas",   book:"FanDuel", odds:125, fv:123, ev:"0.9%"},
+  {player:"Bobby McCann",       book:"Bet365",  odds:375, fv:352, ev:"5.2%"},
+  {player:"Juraj Slafkovsky",   book:"Bet365",  odds:210, fv:196, ev:"4.9%"},
+  {player:"Morgan Geekie",      book:"Bet365",  odds:250, fv:235, ev:"4.5%"},
+  {player:"Jackson Blake",      book:"Bet365",  odds:350, fv:336, ev:"3.1%"},
+  {player:"Kyle Connor",        book:"FanDuel", odds:150, fv:146, ev:"1.8%"},
+  {player:"Kirill Marchenko",   book:"Bet365",  odds:205, fv:200, ev:"1.7%"},
+  {player:"John Tavares",       book:"FanDuel", odds:200, fv:195, ev:"1.6%"},
 ];
 
 const yesterdayPlays = [
-  {player:"Juraj Slafkovsky", book:"Bet365", odds:200, ev:"4.6%", units:1, pl:-1.00},
-  {player:"Bobby McCann",     book:"Bet365", odds:375, ev:"3.0%", units:1, pl:3.75},
-  {player:"Leon Draisaitl",   book:"Bet365", odds:125, ev:"2.6%", units:1, pl:1.25},
-  {player:"Zach Hyman",       book:"Bet365", odds:150, ev:"1.9%", units:1, pl:1.50},
-  {player:"Kyle Connor",      book:"Bet365", odds:155, ev:"1.2%", units:1, pl:1.55},
+  {player:"David Pastrnak", book:"Bet365",  odds:150, ev:"1.1%", units:1, pl:1.50},
+  {player:"Brock Nelson",   book:"FanDuel", odds:200, ev:"1.1%", units:1, pl:-1.00},
+  {player:"Martin Necas",   book:"FanDuel", odds:125, ev:"0.9%", units:1, pl:-1.00},
 ];
 
 const monthlyData = [
