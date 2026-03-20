@@ -619,13 +619,13 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
     </div>
   </div>
   <div class="topbar-stats">
-    <div class="ts-chip"><span class="lbl">Gross</span><span class="val up">+91.46u</span></div>
-    <div class="ts-chip"><span class="lbl">Net</span><span class="val cy">+83.46u</span></div>
+    <div class="ts-chip"><span class="lbl">Gross</span><span class="val up">+93.31u</span></div>
+    <div class="ts-chip"><span class="lbl">Net</span><span class="val cy">+85.31u</span></div>
     <div class="ts-chip ts-divider"></div>
-    <div class="ts-chip"><span class="lbl">Yesterday</span><span class="val" style="color:#f87171">−0.50u</span></div>
+    <div class="ts-chip"><span class="lbl">Yesterday</span><span class="val up">+1.35u</span></div>
   </div>
   <div class="topbar-right">
-    <div class="date-pill">TUE · MAR 17 · 2026</div>
+    <div class="date-pill">FRI · MAR 20 · 2026</div>
     <div class="live-dot">LIVE</div>
   </div>
 </div>
@@ -696,10 +696,11 @@ table.plays td { padding:7px 12px; vertical-align:middle; }
           <div class="pane-title">
             <div class="icon-wrap green">✓</div>
             <h2>Yesterday</h2>
-            <span class="badge">MAR 16</span>
+            <span class="badge">MAR 19</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
+            <span id="yestPL" style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:700;"></span>
             <button class="yest-toggle" id="yestToggle" onclick="toggleYest()">▲ HIDE</button>
           </div>
         </div>
@@ -861,19 +862,18 @@ handleResize();
 
 // ── DATA ──────────────────────────────────────────
 const todayPlays = [
-  {player:"Bobby McCann",       book:"Bet365",  odds:375, fv:352, ev:"5.2%"},
-  {player:"Juraj Slafkovsky",   book:"Bet365",  odds:210, fv:196, ev:"4.9%"},
-  {player:"Morgan Geekie",      book:"Bet365",  odds:250, fv:235, ev:"4.5%"},
-  {player:"Jackson Blake",      book:"Bet365",  odds:350, fv:336, ev:"3.1%"},
-  {player:"Kyle Connor",        book:"FanDuel", odds:150, fv:146, ev:"1.8%"},
-  {player:"Kirill Marchenko",   book:"Bet365",  odds:205, fv:200, ev:"1.7%"},
-  {player:"John Tavares",       book:"FanDuel", odds:200, fv:195, ev:"1.6%"},
+  {player:"Martin Necas",    book:"BetRivers",  odds:133, fv:123, ev:"4.5%"},
+  {player:"Sam Bennett",     book:"Bet365",     odds:240, fv:229, ev:"3.4%"},
+  {player:"Cutter Gauthier", book:"DraftKings", odds:195, fv:188, ev:"2.6%"},
+  {player:"Matthew Tkachuk", book:"Bet365",     odds:180, fv:177, ev:"0.9%"},
 ];
 
 const yesterdayPlays = [
-  {player:"David Pastrnak", book:"Bet365",  odds:150, ev:"1.1%", units:1, pl:1.50},
-  {player:"Brock Nelson",   book:"FanDuel", odds:200, ev:"1.1%", units:1, pl:-1.00},
-  {player:"Martin Necas",   book:"FanDuel", odds:125, ev:"0.9%", units:1, pl:-1.00},
+  {player:"Juraj Slafkovsky", book:"Bet365",  odds:245, ev:"5.7%", units:1, pl:2.45},
+  {player:"Drake Batherson",  book:"Bet365",  odds:240, ev:"5.3%", units:1, pl:-1.00},
+  {player:"Brady Tkachuk",    book:"Bet365",  odds:190, ev:"3.2%", units:1, pl:1.90},
+  {player:"Dylan Guenther",   book:"MGM",     odds:200, ev:"1.7%", units:1, pl:-1.00},
+  {player:"Kyle Connor",      book:"FanDuel", odds:170, ev:"0.3%", units:1, pl:-1.00},
 ];
 
 const monthlyData = [
@@ -963,6 +963,9 @@ function renderYesterday() {
   document.getElementById('y-losses').textContent = losses;
   document.getElementById('y-winpct').textContent = pct + '%';
   document.getElementById('yestRecord').textContent = wins + 'W – ' + losses + 'L';
+  const plSign = totalPL > 0 ? '+' : '';
+  document.getElementById('yestPL').textContent = plSign + totalPL.toFixed(2) + 'u';
+  document.getElementById('yestPL').style.color = totalPL > 0 ? 'var(--green)' : totalPL < 0 ? 'var(--red)' : 'var(--mid)';
   const plEl = document.getElementById('y-pl');
   plEl.textContent = fmtPL(totalPL) + 'u';
   plEl.style.color = totalPL > 0 ? 'var(--green)' : totalPL < 0 ? 'var(--red)' : 'var(--mid)';
