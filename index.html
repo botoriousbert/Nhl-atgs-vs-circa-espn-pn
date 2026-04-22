@@ -411,14 +411,14 @@ table.wins-tbl .meta { font-family:'JetBrains Mono',monospace; font-size:0.62rem
     </div>
   </div>
   <div class="topbar-stats">
-    <div class="ts-chip"><span class="lbl">Gross</span><span class="val up">+104.45u</span></div>
-    <div class="ts-chip"><span class="lbl">Net</span><span class="val cy">+96.45u</span></div>
+    <div class="ts-chip"><span class="lbl">Playoffs</span><span class="val up">0.00u</span></div>
+    <div class="ts-chip"><span class="lbl">Season Net</span><span class="val cy">+96.45u</span></div>
     <div class="ts-chip ts-divider"></div>
-    <div class="ts-chip"><span class="lbl">Apr 13</span><span class="val up">+0.75u</span></div>
+    <div class="ts-chip"><span class="lbl">Apr 21</span><span class="val" style="color:rgba(255,255,255,0.5)">0.00u</span></div>
   </div>
   <div class="topbar-right">
-    <div class="playoffs-badge">🏒 PLAYOFFS</div>
-    <div class="date-pill">TUE · APR 21 · 2026</div>
+    <div class="playoffs-badge">🏒 PLAYOFFS R1</div>
+    <div class="date-pill">WED · APR 22 · 2026</div>
     <div class="live-dot">LIVE</div>
   </div>
 </div>
@@ -445,7 +445,7 @@ table.wins-tbl .meta { font-family:'JetBrains Mono',monospace; font-size:0.62rem
   <div class="page active" id="page-daily">
     <div class="sub-tab-bar">
       <button class="sub-tab-btn active" id="subToday"   onclick="switchSubTab('today')">📋 Today</button>
-      <button class="sub-tab-btn"        id="subYest"    onclick="switchSubTab('yesterday')">✓ Apr 13</button>
+      <button class="sub-tab-btn"        id="subYest"    onclick="switchSubTab('yesterday')">✓ Apr 21</button>
       <button class="sub-tab-btn"        id="subParlays" onclick="switchSubTab('parlays')">🎰 Parlays</button>
     </div>
     <div class="daily-layout">
@@ -474,8 +474,8 @@ table.wins-tbl .meta { font-family:'JetBrains Mono',monospace; font-size:0.62rem
         <div class="pane-head">
           <div class="pane-title">
             <div class="icon-wrap green">✓</div>
-            <h2>Apr 13 — Final Day</h2>
-            <span class="badge">REG SEASON</span>
+            <h2>Apr 21 — Playoffs R1</h2>
+            <span class="badge">1W–2L</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <span id="yestRecord" style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--mid);font-weight:600;"></span>
@@ -736,17 +736,14 @@ handleResize();
 
 // ── DATA ──────────────────────────────────────────────
 const todayPlays = [
-  {player:"Dylan Guenther",    book:"DraftKings", odds:200, fv:195, ev:"1.8%"},
-  {player:"Cole Caufield",     book:"FanDuel",    odds:150, fv:147, ev:"1.1%"},
-  {player:"Juraj Slafkovsky",  book:"Bet365",     odds:210, fv:209, ev:"0.2%"},
+  {player:"Ryan Hartman",  book:"Bet365", odds:310, fv:281, ev:"7.7%"},
+  {player:"Matt Boldy",    book:"Bet365", odds:155, fv:146, ev:"3.6%"},
 ];
 
 const yesterdayPlays = [
-  {player:"Alex Debrincat",    book:"Bet365", odds:175, ev:"3.2%", units:1, pl:1.75},
-  {player:"Valeri Nichushkin", book:"Bet365", odds:375, ev:"3.6%", units:1, pl:-1},
-  {player:"Ryan Hartman",      book:"Bet365", odds:270, ev:"4.3%", units:0, pl:0, void:true},
-  {player:"Kirill Kaprizov",   book:"Bet365", odds:140, ev:"3.9%", units:0, pl:0, void:true},
-  {player:"Seth Jarvis",       book:"Bet365", odds:205, ev:"3.0%", units:0, pl:0, void:true},
+  {player:"Dylan Guenther",    book:"DraftKings", odds:200, ev:"1.8%", units:1, pl:2.00},
+  {player:"Cole Caufield",     book:"FanDuel",    odds:150, ev:"1.1%", units:1, pl:-1},
+  {player:"Juraj Slafkovsky",  book:"Bet365",     odds:210, ev:"0.2%", units:1, pl:-1},
 ];
 
 const monthlyData = [
