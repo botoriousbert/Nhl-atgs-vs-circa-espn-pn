@@ -79,7 +79,16 @@ main{flex:1;min-height:0;display:flex;flex-direction:column}
 .player{font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pmeta{font-size:.76rem;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
 .pmeta .mbook{display:none}
-.book{font-size:.8rem;color:var(--accent);background:var(--accent-bg);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.book{font-size:.8rem;font-weight:500;color:var(--ink);background:var(--ice);border:1px solid var(--line);border-radius:6px;padding:2px 8px 2px 6px;white-space:nowrap}
+.bdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;flex-shrink:0}
+.res.W{background:rgba(21,128,61,.055)} .res.L{background:rgba(198,40,40,.05)}
+.cal{padding:16px 18px 12px}
+.cal svg{width:100%;height:auto;display:block;max-width:980px}
+.cal svg rect{shape-rendering:crispEdges}
+.cal-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:.8rem;color:var(--mute)}
+.cal-legend{display:flex;align-items:center;gap:3px}
+.cal-legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+.cal-legend span{margin:0 6px}
 .odds{font-family:var(--num);font-weight:600;font-size:1.15rem;color:var(--odds)}
 .fv{font-family:var(--num);color:var(--faint);font-size:1rem}
 .evc{display:flex;align-items:center;justify-content:flex-end;gap:8px}
@@ -426,6 +435,37 @@ const pct = (a, b) => b ? sign(a) + Math.abs(a / b * 100).toFixed(1) + '%' : '�
 const rate = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '–';
 const rec = s => s.w + '–' + s.l + (s.v ? '–' + s.v : '');
 
+const BOOK_COLOR = { Bet365:'#0f8a5f', FanDuel:'#1493ff', MGM:'#b8975a', DraftKings:'#f46c22', Fanatics:'#d22630', BetRivers:'#1c3f94' };
+const dot = n => `<i class="bdot" style="background:${BOOK_COLOR[n] || '#8a98ab'}"></i>`;
+const HEAT_W = ['#d4efdc','#9bd9b0','#4cb872','#15803d'], HEAT_L = ['#fbdcdc','#f4a8a8','#e05a5a','#b91c1c'];
+const heat = v => { const a = Math.abs(v), i = a < 1.5 ? 0 : a < 3 ? 1 : a < 5 ? 2 : 3; return v > 0 ? HEAT_W[i] : v < 0 ? HEAT_L[i] : '#cfd8e3'; };
+
+// Daily P/L calendar: one square per day, weeks run left to right.
+function calendarSVG(series, startStr) {
+  const daily = {}; let prev = 0;
+  series.forEach(([d, c]) => { daily[d] = Math.round((c - prev) * 100) / 100; prev = c; });
+  const start = toDate(startStr), end = toDate(series[series.length - 1][0]);
+  const wk0 = new Date(start); wk0.setDate(wk0.getDate() - wk0.getDay());
+  const DAY = 864e5, cell = 16, gap = 3, L = 30, T = 20;
+  const weeks = Math.floor(Math.round((end - wk0) / DAY) / 7) + 1;
+  const W = L + weeks * (cell + gap), H = T + 7 * (cell + gap);
+  let s = '', lastMonth = -1, lastLabelX = -99;
+  ['Mon','Wed','Fri'].forEach((n, i) => s += `<text x="0" y="${T + (i * 2 + 1) * (cell + gap) + 12}" font-size="11" fill="#8a98ab" font-family="Barlow, system-ui, sans-serif">${n}</text>`);
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    const col = Math.floor(Math.round((d - wk0) / DAY) / 7), row = d.getDay();
+    const x = L + col * (cell + gap), y = T + row * (cell + gap);
+    const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    if (d.getMonth() !== lastMonth) {
+      lastMonth = d.getMonth();
+      const lx = row > 3 ? x + cell + gap : x;   // month starting late in a week labels the next column
+      if (lx - lastLabelX >= 2 * (cell + gap)) { s += `<text x="${lx}" y="12" font-size="11" fill="#5b6b80" font-family="Barlow, system-ui, sans-serif">${MON[lastMonth]}</text>`; lastLabelX = lx; }
+    }
+    const v = daily[key];
+    s += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="${v === undefined ? '#edf1f6' : heat(v)}"><title>${shortDate(key)}: ${v === undefined ? 'no bets' : u(v)}</title></rect>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily profit and loss calendar">${s}</svg>`;
+}
+
 /* ── build models ── */
 const CUR = buildModel(LOG, FREE_BETS);
 const lastDay = [...new Set(CUR.bets.map(b => b.d))].filter(d => d < TODAY.date).sort().pop() || null;
@@ -481,8 +521,8 @@ function renderToday() {
     const meta = [p.game, p.time].filter(Boolean).join(', ');
     return `<div class="prow${p.status === 'cashed' ? ' cashed' : ''}${i === 0 && p.status !== 'cashed' ? ' top' : ''}">
       <div><span class="player">${p.player}</span>
-        <span class="pmeta">${p.status === 'cashed' ? 'Cashed out, ' : ''}<span class="mbook">${p.book}${meta ? ', ' : ''}</span>${meta}${(p.u ?? 1) !== 1 ? ' (' + p.u + 'u)' : ''}</span></div>
-      <span class="c-book"><span class="book">${p.book}</span></span>
+        <span class="pmeta">${p.status === 'cashed' ? 'Cashed out, ' : ''}<span class="mbook">${dot(p.book)}${p.book}${meta ? ', ' : ''}</span>${meta}${(p.u ?? 1) !== 1 ? ' (' + p.u + 'u)' : ''}</span></div>
+      <span class="c-book"><span class="book">${dot(p.book)}${p.book}</span></span>
       <span class="r odds">${odds(p.odds)}</span>
       <span class="r fv c-fv">${odds(p.fv)}</span>
       <span class="evc"><span class="ev">${p.ev != null ? p.ev.toFixed(1) + '%' : '–'}</span><span class="evbar"><i style="width:${p.ev != null ? Math.max(4, Math.min(100, p.ev / maxEV * 100)) : 0}%"></i></span></span>
@@ -505,7 +545,7 @@ function renderYest() {
   }
   $('yestList').innerHTML = '<div class="res-grid">' + lastBets.map(b => `
     <div class="res ${b.r}"><i></i>
-      <div class="who"><b>${b.p}</b><small>${[b.b, b.ev != null ? 'EV ' + b.ev.toFixed(1) + '%' : '', b.g].filter(Boolean).join(', ')}</small></div>
+      <div class="who"><b>${b.p}</b><small>${[dot(b.b) + b.b, b.ev != null ? 'EV ' + b.ev.toFixed(1) + '%' : '', b.g].filter(Boolean).join(', ')}</small></div>
       <span class="odds o">${odds(b.o)}</span>
       <span class="p ${cls(b.pl)}">${b.r === 'V' ? 'Void' : u(b.pl)}</span>
     </div>`).join('') + '</div>';
@@ -537,10 +577,10 @@ function chartSVG(series, startDate) {
   let grid = '';
   for (let v = Math.ceil(lo / step) * step; v <= hi; v += step)
     grid += `<line x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,${v === 0 ? .35 : .08})"/>
-             <text x="${pl - 8}" y="${y(v) + 4}" text-anchor="end" fill="rgba(255,255,255,.45)" font-size="12" font-family="Barlow Condensed">${v}</text>`;
+             <text x="${pl - 8}" y="${y(v) + 4}" text-anchor="end" fill="rgba(255,255,255,.45)" font-size="12" font-family="Barlow Condensed, Arial Narrow, sans-serif">${v}</text>`;
   let months = '', seen = new Set();
   pts.forEach(p => { const k = p[0].slice(0, 7); if (!seen.has(k)) { seen.add(k); const d = toDate(k + '-01'); const xx = Math.max(pl, x(k + '-01'));
-    months += `<text x="${xx}" y="${H - 6}" fill="rgba(255,255,255,.45)" font-size="12" font-family="Barlow">${MON[d.getMonth()]}</text>`; } });
+    months += `<text x="${xx}" y="${H - 6}" fill="rgba(255,255,255,.45)" font-size="12" font-family="Barlow, system-ui, sans-serif">${MON[d.getMonth()]}</text>`; } });
   const end = pts[pts.length - 1];
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative units by date">
     <defs><linearGradient id="fill${startDate}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#5ee08a" stop-opacity=".28"/><stop offset="1" stop-color="#5ee08a" stop-opacity="0"/></linearGradient></defs>
@@ -577,6 +617,11 @@ function renderSeason(el, m, o) {
     return;
   }
 
+  const flat = m.dayCount - m.upDays - m.downDays;
+  h += `<h3 class="sec">Daily results</h3><div class="card cal">${calendarSVG(m.series, o.calStart)}
+    <div class="cal-foot"><span>${m.upDays} winning days, ${m.downDays} losing${flat ? ', ' + flat + ' flat' : ''}, out of ${m.dayCount}</span>
+      <span class="cal-legend"><span>Loss</span>${[...HEAT_L].reverse().map(c => `<i style="background:${c}"></i>`).join('')}<i style="background:#edf1f6"></i>${HEAT_W.map(c => `<i style="background:${c}"></i>`).join('')}<span>Win</span></span></div></div>`;
+
   const bestMonth = [...m.months].sort((a, b) => b.net - a.net)[0];
   const tiles = [
     ['Best day', u(m.bestDay.pl), shortDate(m.bestDay.d), 'pos'],
@@ -595,7 +640,7 @@ function renderSeason(el, m, o) {
   const maxAbs = Math.max(...m.books.map(b => Math.abs(b.pl)), 1);
   h += `<h3 class="sec">By book</h3><div class="card"><table class="t">
     <thead><tr><th>Book</th><th>Bets</th><th>Record</th><th class="hide-sm">Win rate</th><th class="hide-sm">ROI</th><th>P/L</th></tr></thead><tbody>` +
-    m.books.map(b => `<tr><td>${b.name}</td><td>${b.n}</td><td>${rec(b)}</td><td class="hide-sm">${rate(b.w, b.w + b.l)}</td><td class="hide-sm ${cls(b.pl)}">${pct(b.pl, b.risked)}</td>
+    m.books.map(b => `<tr><td>${dot(b.name)}${b.name}</td><td>${b.n}</td><td>${rec(b)}</td><td class="hide-sm">${rate(b.w, b.w + b.l)}</td><td class="hide-sm ${cls(b.pl)}">${pct(b.pl, b.risked)}</td>
       <td class="${cls(b.pl)}"><span class="bar hide-sm" style="width:${Math.round(Math.abs(b.pl) / maxAbs * 70)}px;background:currentColor;opacity:.35"></span>${u(b.pl, '')}</td></tr>`).join('') +
     `</tbody></table></div>`;
 
@@ -604,7 +649,7 @@ function renderSeason(el, m, o) {
     return `<div class="card month">
       <header><b>${mo.label}</b><strong class="${cls(mo.net)}">${u(mo.net)}</strong></header>
       <div class="rec">${mo.n} bets, ${rec(mo)}</div>
-      ${books.map(([n, v]) => `<div class="row"><span>${n}</span><span class="${cls(v)}">${u(v, '')}</span></div>`).join('')}
+      ${books.map(([n, v]) => `<div class="row"><span>${dot(n)}${n}</span><span class="${cls(v)}">${u(v, '')}</span></div>`).join('')}
       <footer><span>Gross <b class="${cls(mo.gross)}">${u(mo.gross)}</b></span>${mo.fb ? `<span>Free bets <b class="neg">${u(mo.fb)}</b></span>` : ''}</footer>
     </div>`; }).join('') + `</div>`;
 
@@ -614,7 +659,7 @@ function renderSeason(el, m, o) {
 
   h += `<h3 class="sec">Biggest single wins</h3><div class="card"><table class="t">
     <thead><tr><th>Player</th><th>Book</th><th class="hide-sm">Date</th><th>Odds</th><th>Units</th></tr></thead><tbody>` +
-    m.topWins.filter(x => x.pl > 0).map(x => `<tr><td>${x.p}</td><td class="meta">${x.b}</td><td class="meta hide-sm">${shortDate(x.d)}</td><td class="odds">${odds(x.o)}</td><td class="pos">${u(x.pl)}</td></tr>`).join('') +
+    m.topWins.filter(x => x.pl > 0).map(x => `<tr><td>${x.p}</td><td class="meta">${dot(x.b)}${x.b}</td><td class="meta hide-sm">${shortDate(x.d)}</td><td class="odds">${odds(x.o)}</td><td class="pos">${u(x.pl)}</td></tr>`).join('') +
     `</tbody></table></div>`;
 
   el.innerHTML = h;
@@ -644,8 +689,8 @@ mq.addEventListener ? mq.addEventListener('change', syncPanes) : mq.addListener(
 
 /* ── init ── */
 renderTop(); renderToday(); renderYest(); renderParlays(); syncPanes();
-renderSeason($('view-current'), CUR, { title: 'NHL ' + SEASON.label + ' season', span: 'Opens ' + longDate(SEASON.start), start: SEASON.start });
-renderSeason($('view-archive'), ARCHIVE, { title: '2025–26 regular season', span: 'Oct 16, 2025 to Apr 13, 2026, 104 betting days', start: '2025-10-15', notes: ARCHIVE_NOTES });
+renderSeason($('view-current'), CUR, { title: 'NHL ' + SEASON.label + ' season', span: 'Opens ' + longDate(SEASON.start), start: SEASON.start, calStart: SEASON.start });
+renderSeason($('view-archive'), ARCHIVE, { title: '2025–26 regular season', span: 'Oct 16, 2025 to Apr 13, 2026, 104 betting days', start: '2025-10-15', calStart: '2025-10-16', notes: ARCHIVE_NOTES });
 </script>
 </body>
 </html>
