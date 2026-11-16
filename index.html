@@ -353,13 +353,12 @@ table.t td.meta{font-family:var(--txt);font-size:.85rem;color:var(--mute);font-w
 const SEASON = { label:'2026–27', start:'2026-09-29' };
 
 // Today's slate. Optional: game:'EDM @ VGK', time:'7:00 PM', u:1 (units, default 1).
-// boost:true tags a boosted price. status:'pending' marks a play not placed yet (shown, but left out of the counts). status:'cashed' shows the play struck through and drops it from the count.
+// boost:true tags a boosted price. status:'pending' marks a play not placed yet (shown, but left out of the counts). status:'untracked' marks a bet you're keeping that doesn't count in the tracker (e.g. no Circa line). status:'cashed' shows the play struck through and drops it from the count.
 const TODAY = {
-  date: '2026-11-03',
+  date: '2026-11-16',
   plays: [
     // { player:'Player Name', book:'Bet365', odds:310, fv:281, ev:7.7, game:'MIN @ DAL', time:'8:00 PM' },
-    { player:'Cole Caufield',  book:'Kalshi', odds:128, fv:122, ev:2.7 },
-    { player:'Connor McDavid', book:'Bet365', odds:150, fv:144, ev:2.4 },
+    { player:'Cole Caufield', book:'MGM', odds:155, fv:137, ev:7.5 },
   ],
 };
 
@@ -493,9 +492,9 @@ const LOG = [
   { d:'2026-10-13', p:'Macklin Celebrini', b:'MGM', o:175, r:'W' },
 
   // Oct 14
-  { d:'2026-10-14', p:'Nathan MacKinnon', b:'Novig',   o:113, fv:106, ev:3.2, r:'L' },
-  { d:'2026-10-14', p:'Nazem Kadri',      b:'Bet365',  o:416, fv:279, ev:3.0, r:'L', note:'boosted' },
-  { d:'2026-10-14', p:'Ryan Leonard',     b:'FanDuel', o:460, fv:346, ev:1.8, r:'L', note:'boosted' },
+  { d:'2026-10-14', p:'Nathan MacKinnon', b:'Novig', o:113, fv:106, ev:3.2, r:'L' },
+  { d:'2026-10-14', p:'Nazem Kadri', b:'Bet365', o:416, fv:279, ev:3.0, r:'L', note:'boosted' },
+  { d:'2026-10-14', p:'Ryan Leonard', b:'FanDuel', o:460, fv:346, ev:1.8, r:'L', note:'boosted' },
 
   // Oct 15
   { d:'2026-10-15', p:'Joel Eriksson Ek', b:'MGM', o:240, fv:229, ev:3.3, r:'L' },
@@ -511,9 +510,9 @@ const LOG = [
   { d:'2026-10-15', p:'Matt Boldy', b:'MGM', o:180, fv:165, ev:5.7, r:'W' },
 
   // Oct 16
-  { d:'2026-10-16', p:'Nathan MacKinnon', b:'MGM',   o:-105, fv:-109, ev:1.8, r:'W' },
-  { d:'2026-10-16', p:'Leo Carlsson',     b:'Novig', o:217,  fv:212,  ev:1.7, r:'L' },
-  { d:'2026-10-16', p:'Cutter Gauthier',  b:'MGM',   o:175,  fv:171,  ev:1.5, r:'L' },
+  { d:'2026-10-16', p:'Nathan MacKinnon', b:'MGM', o:-105, fv:-109, ev:1.8, r:'W' },
+  { d:'2026-10-16', p:'Leo Carlsson', b:'Novig', o:217, fv:212, ev:1.7, r:'L' },
+  { d:'2026-10-16', p:'Cutter Gauthier', b:'MGM', o:175, fv:171, ev:1.5, r:'L' },
 
   // Oct 17
   { d:'2026-10-17', p:'Roman Kantserov', b:'MGM', o:380, fv:342, ev:8.6, r:'L' },
@@ -535,14 +534,14 @@ const LOG = [
   { d:'2026-10-17', p:'Sebastian Aho', b:'MGM', o:195, fv:195, ev:0.1, r:'L' },
 
   // Oct 18
-  { d:'2026-10-18', p:'Matt Boldy',       b:'MGM', o:155, fv:146, ev:3.8, r:'L' },
+  { d:'2026-10-18', p:'Matt Boldy', b:'MGM', o:155, fv:146, ev:3.8, r:'L' },
   { d:'2026-10-18', p:'Joel Eriksson Ek', b:'MGM', o:230, fv:221, ev:3.0, r:'L' },
 
   // Oct 19
   { d:'2026-10-19', p:'Cutter Gauthier', b:'Novig', o:194, fv:192, ev:0.7, r:'L' },
-  { d:'2026-10-19', p:'Nick Schmaltz',   b:'MGM',   o:185, fv:183, ev:0.7, r:'W' },
+  { d:'2026-10-19', p:'Nick Schmaltz', b:'MGM', o:185, fv:183, ev:0.7, r:'W' },
 
-  // Oct 20 (Brock Nelson free bet at 0 units, not logged)
+  // Oct 20
   { d:'2026-10-20', p:'Vasily Podkolzin', b:'Bet365', o:210, fv:195, ev:4.9, r:'L' },
   { d:'2026-10-20', p:'Cutter Gauthier', b:'FanDuel', o:220, fv:206, ev:4.7, r:'L' },
   { d:'2026-10-20', p:'Jack Hughes', b:'Bet365', o:185, fv:180, ev:1.7, r:'L' },
@@ -553,7 +552,7 @@ const LOG = [
   { d:'2026-10-20', p:'William Nylander', b:'Novig', o:239, fv:226, ev:3.9, r:'W' },
   { d:'2026-10-20', p:'Wyatt Johnston', b:'Novig', o:194, fv:188, ev:2.2, r:'L' },
   { d:'2026-10-20', p:'Adam Fantilli', b:'MGM', o:190, fv:185, ev:1.7, r:'L' },
-  { d:'2026-10-20', p:'Cole Perfetti', b:'Bet365', o:275, fv:270, ev:1.3, r:'W', fb:true, note:'free bet' },
+  { d:'2026-10-20', p:'Cole Perfetti', b:'Bet365', o:275, fv:270, ev:1.3, r:'W', note:'free bet', fb:true },
   { d:'2026-10-20', p:'Kyle Connor', b:'Bet365', o:155, fv:153, ev:0.9, r:'L' },
   { d:'2026-10-20', p:'Matt Boldy', b:'Bet365', o:170, fv:168, ev:0.8, r:'L' },
   { d:'2026-10-20', p:'Jake Guentzel', b:'MGM', o:195, fv:194, ev:0.3, r:'L' },
@@ -561,9 +560,9 @@ const LOG = [
   { d:'2026-10-20', p:'Nikita Kucherov', b:'MGM', o:175, fv:170, ev:1.7, r:'W' },
 
   // Oct 21
-  { d:'2026-10-21', p:'Matvei Michkov', b:'MGM',    o:333, fv:295, ev:9.7, r:'L' },
-  { d:'2026-10-21', p:'Josh Norris',    b:'Bet365', o:552, fv:380, ev:2.1, g:'PHI @ BUF', r:'L', note:'boosted' },
-  { d:'2026-10-21', p:'Sam Bennett',    b:'MGM',    o:270, fv:264, ev:1.7, r:'L' },
+  { d:'2026-10-21', p:'Matvei Michkov', b:'MGM', o:333, fv:295, ev:9.7, r:'L' },
+  { d:'2026-10-21', p:'Josh Norris', b:'Bet365', o:552, fv:380, ev:2.1, g:'PHI @ BUF', r:'L', note:'boosted' },
+  { d:'2026-10-21', p:'Sam Bennett', b:'MGM', o:270, fv:264, ev:1.7, r:'L' },
 
   // Oct 22
   { d:'2026-10-22', p:'Jimmy Snuggerud', b:'MGM', o:260, fv:238, ev:6.4, r:'W' },
@@ -583,30 +582,30 @@ const LOG = [
 
   // Oct 24
   { d:'2026-10-24', p:'Beckett Sennecke', b:'MGM', o:220, fv:216, ev:1.3, r:'W' },
-  { d:'2026-10-24', p:'Matvei Michkov',   b:'MGM', o:270, fv:269, ev:0.1, r:'W' },
-  { d:'2026-10-24', p:'Arseny Gritsyuk',  b:'MGM', o:350, fv:346, ev:0.9, r:'W' },
+  { d:'2026-10-24', p:'Matvei Michkov', b:'MGM', o:270, fv:269, ev:0.1, r:'W' },
+  { d:'2026-10-24', p:'Arseny Gritsyuk', b:'MGM', o:350, fv:346, ev:0.9, r:'W' },
 
   // Oct 25
   { d:'2026-10-25', p:'Matt Boldy', b:'Novig', o:141, fv:137, ev:1.5, r:'L' },
 
   // Oct 26
-  { d:'2026-10-26', p:'Connor McDavid',  b:'Novig',   o:115, fv:107, ev:4.0, r:'L' },
-  { d:'2026-10-26', p:'Alex DeBrincat',  b:'FanDuel', o:180, fv:176, ev:1.4, r:'L' },
-  { d:'2026-10-26', p:'Pavel Dorofeyev', b:'Novig',   o:194, fv:194, ev:0.2, r:'L' },
-  { d:'2026-10-26', p:'Artemi Panarin',  b:'Kalshi',  o:228, fv:221, ev:2.3, r:'W' },
+  { d:'2026-10-26', p:'Connor McDavid', b:'Novig', o:115, fv:107, ev:4.0, r:'L' },
+  { d:'2026-10-26', p:'Alex DeBrincat', b:'FanDuel', o:180, fv:176, ev:1.4, r:'L' },
+  { d:'2026-10-26', p:'Pavel Dorofeyev', b:'Novig', o:194, fv:194, ev:0.2, r:'L' },
+  { d:'2026-10-26', p:'Artemi Panarin', b:'Kalshi', o:228, fv:221, ev:2.3, r:'W' },
 
   // Oct 27
-  { d:'2026-10-27', p:'Matt Boldy',       b:'FanDuel', o:180, fv:172, ev:3.1, r:'L' },
-  { d:'2026-10-27', p:'Logan Cooley',     b:'Kalshi',  o:295, fv:270, ev:6.7, r:'W' },
-  { d:'2026-10-27', p:'Dylan Guenther',   b:'Novig',   o:194, fv:184, ev:3.6, r:'L' },
-  { d:'2026-10-27', p:'Robert Thomas',    b:'Novig',   o:300, fv:287, ev:3.4, r:'L' },
-  { d:'2026-10-27', p:'Teuvo Teravainen', b:'Novig',   o:426, fv:417, ev:1.8, r:'L' },
-  { d:'2026-10-27', p:'Quinton Byfield',  b:'FanDuel', o:375, fv:298, ev:19.4, r:'L', note:'boosted' },
-  { d:'2026-10-27', p:'Mikko Rantanen',   b:'Kalshi',  o:208, fv:201, ev:2.4, r:'L' },
-  { d:'2026-10-27', p:'Tyler Bertuzzi',   b:'Novig',   o:285, fv:278, ev:1.8, r:'L' },
+  { d:'2026-10-27', p:'Matt Boldy', b:'FanDuel', o:180, fv:172, ev:3.1, r:'L' },
+  { d:'2026-10-27', p:'Logan Cooley', b:'Kalshi', o:295, fv:270, ev:6.7, r:'W' },
+  { d:'2026-10-27', p:'Dylan Guenther', b:'Novig', o:194, fv:184, ev:3.6, r:'L' },
+  { d:'2026-10-27', p:'Robert Thomas', b:'Novig', o:300, fv:287, ev:3.4, r:'L' },
+  { d:'2026-10-27', p:'Teuvo Teravainen', b:'Novig', o:426, fv:417, ev:1.8, r:'L' },
+  { d:'2026-10-27', p:'Quinton Byfield', b:'FanDuel', o:375, fv:298, ev:19.4, r:'L', note:'boosted' },
+  { d:'2026-10-27', p:'Mikko Rantanen', b:'Kalshi', o:208, fv:201, ev:2.4, r:'L' },
+  { d:'2026-10-27', p:'Tyler Bertuzzi', b:'Novig', o:285, fv:278, ev:1.8, r:'L' },
 
   // Oct 28
-  { d:'2026-10-28', p:'Martin Necas',     b:'MGM',   o:210, fv:205, ev:1.6, r:'L' },
+  { d:'2026-10-28', p:'Martin Necas', b:'MGM', o:210, fv:205, ev:1.6, r:'L' },
   { d:'2026-10-28', p:'Nathan MacKinnon', b:'Novig', o:147, fv:136, ev:4.4, r:'W' },
 
   // Oct 29
@@ -626,14 +625,85 @@ const LOG = [
 
   // Oct 30
   { d:'2026-10-30', p:'Joel Farabee', b:'Kalshi', o:239, fv:220, ev:6.0, r:'W' },
-  { d:'2026-10-30', p:'Tomas Hertl',  b:'Novig',  o:285, fv:280, ev:1.3, r:'L' },
+  { d:'2026-10-30', p:'Tomas Hertl', b:'Novig', o:285, fv:280, ev:1.3, r:'L' },
 
   // Oct 31
-  { d:'2026-10-31', p:'Connor McDavid',  b:'Novig',  o:150, fv:151, ev:0, r:'L' },
-  { d:'2026-10-31', p:'Novak',           b:'Kalshi', o:295, fv:306, ev:0, r:'W' },
-  { d:'2026-10-31', p:'Arvidsson',       b:'Novig',  o:245, fv:233, ev:0, r:'L' },
-  { d:'2026-10-31', p:'Jason Robertson', b:'Bet365', o:155, fv:151, ev:0, r:'L', note:'boosted' },
-  { d:'2026-10-31', p:'Claude Giroux',   b:'Bet365', o:425, fv:430, ev:0, r:'L', note:'boosted' },
+  { d:'2026-10-31', p:'Connor McDavid', b:'Novig', o:150, fv:151, ev:0.0, r:'L' },
+  { d:'2026-10-31', p:'Novak', b:'Kalshi', o:295, fv:306, ev:0.0, r:'W' },
+  { d:'2026-10-31', p:'Arvidsson', b:'Novig', o:245, fv:233, ev:0.0, r:'L' },
+  { d:'2026-10-31', p:'Jason Robertson', b:'Bet365', o:155, fv:151, ev:0.0, r:'L', note:'boosted' },
+  { d:'2026-10-31', p:'Claude Giroux', b:'Bet365', o:425, fv:430, ev:0.0, r:'L', note:'boosted' },
+
+  // Nov 3
+  { d:'2026-11-03', p:'Cole Caufield', b:'Kalshi', o:128, fv:122, ev:2.7, r:'W' },
+  { d:'2026-11-03', p:'Connor McDavid', b:'Bet365', o:150, fv:144, ev:2.4, r:'L' },
+  { d:'2026-11-03', p:'Cole Caufield', b:'Novig', o:133, fv:125, ev:3.7, r:'L' },
+  { d:'2026-11-03', p:'Tomas Hertl', b:'Novig', o:277, fv:267, ev:2.7, r:'W' },
+  { d:'2026-11-03', p:'Auston Matthews', b:'Novig', o:144, fv:143, ev:0.5, r:'L' },
+  { d:'2026-11-03', p:'Jason Robertson', b:'Novig', o:167, fv:167, ev:0.2, r:'W' },
+  { d:'2026-11-03', p:'Seth Jarvis', b:'Novig', o:245, fv:230, ev:4.4, r:'L' },
+  { d:'2026-11-03', p:'Nathan MacKinnon', b:'Novig', o:153, fv:145, ev:3.3, r:'L' },
+  { d:'2026-11-03', p:'Brandon Hagel', b:'Novig', o:150, fv:146, ev:1.4, r:'L' },
+  { d:'2026-11-03', p:'Logan Cooley', b:'MGM', o:195, fv:193, ev:0.6, r:'L' },
+
+  // Nov 4
+  { d:'2026-11-04', p:'Brady Tkachuk', b:'MGM', o:150, fv:138, ev:5.1, r:'L' },
+  { d:'2026-11-04', p:'Tim Stutzle', b:'Novig', o:190, fv:186, ev:1.3, r:'L' },
+  { d:'2026-11-04', p:'Artemi Panarin', b:'DraftKings', o:185, fv:181, ev:1.4, r:'L' },
+
+  // Nov 5
+  { d:'2026-11-05', p:'Martin Necas', b:'Bet365', o:273, fv:175, ev:5.3, r:'L', note:'boosted' },
+  { d:'2026-11-05', p:'Jack Hughes', b:'MGM', o:150, fv:142, ev:3.5, r:'L' },
+  { d:'2026-11-05', p:'Jake Guentzel', b:'Bet365', o:120, fv:114, ev:2.8, r:'L' },
+  { d:'2026-11-05', p:'Logan Cooley', b:'Kalshi', o:208, fv:204, ev:1.2, r:'W' },
+
+  // Nov 8
+  { d:'2026-11-08', p:'Brady Tkachuk', b:'MGM', o:175, fv:164, ev:4.1, r:'L' },
+  { d:'2026-11-08', p:'Victor Olofsson', b:'Bet365', o:350, fv:335, ev:3.5, r:'L' },
+  { d:'2026-11-08', p:'Cutter Gauthier', b:'MGM', o:120, fv:117, ev:1.3, r:'W' },
+
+  // Nov 9
+  { d:'2026-11-09', p:'Ryan Nugent-Hopkins', b:'Novig',    o:292, fv:286, ev:1.6, r:'L' },
+  { d:'2026-11-09', p:'Zach Hyman',          b:'Fanatics', o:210, fv:209, ev:0.2, r:'L' },
+
+  // Nov 10
+  { d:'2026-11-10', p:'Dylan Cozens',  b:'Bet365',     o:429, fv:279, ev:2.8, r:'L', note:'boosted' },
+  { d:'2026-11-10', p:'Brady Tkachuk', b:'MGM',        o:195, fv:194, ev:0.5, r:'L' },
+  { d:'2026-11-10', p:'Sam Bennett',   b:'DraftKings', o:320, fv:309, ev:2.7, r:'W' },
+
+  // Nov 11
+  { d:'2026-11-11', p:'Mitch Marner',        b:'Novig', o:300, fv:278, ev:5.8, r:'L' },
+  { d:'2026-11-11', p:'Connor McDavid',      b:'MGM',   o:135, fv:128, ev:3.2, r:'L' },
+  { d:'2026-11-11', p:'Ryan Nugent-Hopkins', b:'MGM',   o:280, fv:276, ev:1.1, r:'L' },
+
+  // Nov 12
+  { d:'2026-11-12', p:'Alex DeBrincat',  b:'MGM',        o:210, fv:199, ev:3.6, r:'L' },
+  { d:'2026-11-12', p:'Jason Robertson', b:'Novig',      o:156, fv:148, ev:3.2, r:'L' },
+  { d:'2026-11-12', p:'Matt Boldy',      b:'DraftKings', o:155, fv:152, ev:1.0, r:'W' },
+  { d:'2026-11-12', p:'Jack Hughes',     b:'MGM',        o:140, fv:139, ev:0.6, r:'W' },
+  { d:'2026-11-12', p:'Roope Hintz',     b:'Novig',      o:257, fv:251, ev:1.8, r:'W' },
+  { d:'2026-11-12', p:'Kevin Fiala',     b:'DraftKings', o:295, fv:288, ev:1.8, r:'L' },
+
+  // Nov 13
+  { d:'2026-11-13', p:'Mitch Marner',    b:'Bet365',     o:270, fv:249, ev:6.1, r:'L' },
+  { d:'2026-11-13', p:'Mika Zibanejad',  b:'MGM',        o:210, fv:198, ev:4.0, r:'L' },
+  { d:'2026-11-13', p:'Victor Olofsson', b:'DraftKings', o:295, fv:275, ev:5.2, r:'W' },
+
+  // Nov 14
+  { d:'2026-11-14', p:'Logan Stankoven', b:'MGM',    o:220, fv:217, ev:1.0, r:'L' },
+  { d:'2026-11-14', p:'Kyle Connor',     b:'MGM',    o:125, fv:125, ev:0.2, r:'W' },
+  { d:'2026-11-14', p:'Anton Lundell',   b:'Bet365', o:390, fv:387, ev:0.5, r:'W', fb:true, note:'free bet' },
+  { d:'2026-11-14', p:'Cutter Gauthier', b:'Bet365', o:182, fv:119, ev:0.3, r:'W', note:'boosted' },
+
+  // Nov 15
+  { d:'2026-11-15', p:'Joel Farabee',      b:'MGM',        o:230, fv:214, ev:5.2, r:'L' },
+  { d:'2026-11-15', p:'Jack Eichel',       b:'MGM',        o:165, fv:154, ev:4.3, r:'L' },
+  { d:'2026-11-15', p:'Matvei Gridin',     b:'MGM',        o:250, fv:239, ev:3.3, r:'L' },
+  { d:'2026-11-15', p:'Macklin Celebrini', b:'Bet365',     o:221, fv:147, ev:3.1, r:'W', note:'boosted' },
+  { d:'2026-11-15', p:'Cutter Gauthier',   b:'MGM',        o:115, fv:111, ev:2.0, r:'W' },
+  { d:'2026-11-15', p:'Ivar Stenberg',     b:'MGM',        o:340, fv:332, ev:2.0, r:'W' },
+  { d:'2026-11-15', p:'Beckett Sennecke',  b:'Novig',      o:182, fv:182, ev:0.0, r:'W' },
+  { d:'2026-11-15', p:'Jason Robertson',   b:'DraftKings', o:165, fv:165, ev:0.0, r:'W' },
 ];
 
 // Free bet adjustments (negative numbers), dated to the month they belong in.
@@ -808,7 +878,7 @@ function renderTop() {
 
 /* ── daily panes ── */
 function renderToday() {
-  const rank = p => p.status === 'cashed' ? 2 : p.status === 'pending' ? 1 : 0;
+  const rank = p => p.status === 'cashed' ? 2 : (p.status === 'pending' || p.status === 'untracked') ? 1 : 0;
   const plays = TODAY.plays.map(p => ({ ...p, book: BOOK_ALIAS[p.book] || p.book })).sort((a, b) => rank(a) - rank(b) || (b.ev ?? 0) - (a.ev ?? 0));
   const live = plays.filter(p => !p.status);
   const pendingN = plays.filter(p => p.status === 'pending').length;
@@ -831,9 +901,9 @@ function renderToday() {
   const maxEV = Math.max(5, ...live.filter(p => p.ev != null && !p.boost).map(p => p.ev));  // boosts don't stretch the bar scale
   $('todayBody').innerHTML = plays.map((p, i) => {
     const meta = [p.boost ? 'Boosted' : '', p.ev < 0 ? 'Now −EV, can\'t cash out' : '', p.game, p.time].filter(Boolean).join(', ');
-    return `<div class="prow${p.status === 'cashed' ? ' cashed' : p.status === 'pending' ? ' pending' : ''}${i === 0 && !p.status ? ' top' : ''}">
+    return `<div class="prow${p.status === 'cashed' ? ' cashed' : (p.status === 'pending' || p.status === 'untracked') ? ' pending' : ''}${i === 0 && !p.status ? ' top' : ''}">
       <div><span class="player">${p.player}</span>
-        <span class="pmeta">${p.status === 'pending' ? '<span class="ptag">Pending</span>' : ''}${p.status === 'cashed' ? 'Cashed out, ' : ''}<span class="mbook">${dot(p.book)}${p.book}${meta ? ', ' : ''}</span>${meta}${(p.u ?? 1) !== 1 ? ' (' + p.u + 'u)' : ''}</span></div>
+        <span class="pmeta">${p.status === 'pending' ? '<span class="ptag">Pending</span>' : p.status === 'untracked' ? '<span class="ptag">Not tracked</span>' : ''}${p.status === 'cashed' ? 'Cashed out, ' : ''}<span class="mbook">${dot(p.book)}${p.book}${meta ? ', ' : ''}</span>${meta}${(p.u ?? 1) !== 1 ? ' (' + p.u + 'u)' : ''}</span></div>
       <span class="c-book"><span class="book">${dot(p.book)}${p.book}</span></span>
       <span class="r odds">${odds(p.odds)}</span>
       <span class="r fv c-fv">${odds(p.fv)}</span>
