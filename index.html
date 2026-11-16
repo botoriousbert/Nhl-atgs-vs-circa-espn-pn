@@ -87,7 +87,8 @@ main{flex:1;min-height:0;display:flex;flex-direction:column}
 .bdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;flex-shrink:0}
 .res.W{background:rgba(21,128,61,.055)} .res.L{background:rgba(198,40,40,.05)}
 .cal{padding:16px 18px 12px}
-.cal svg{width:100%;height:auto;display:block;max-width:980px}
+.cal-scroll{overflow-x:auto;direction:rtl;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding-bottom:2px}
+.cal svg{width:100%;height:auto;display:block;direction:ltr;margin-left:0;margin-right:auto}
 .cal svg rect{shape-rendering:crispEdges}
 .cal-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:.8rem;color:var(--mute)}
 .cal-legend{display:flex;align-items:center;gap:3px}
@@ -191,6 +192,13 @@ table.t td.meta{font-family:var(--txt);font-size:.85rem;color:var(--mute);font-w
 .month .row span:last-child{font-family:var(--num);font-weight:600;font-size:1rem}
 .month footer{display:flex;justify-content:space-between;padding:8px 16px;margin-top:6px;border-top:1px solid var(--line);font-size:.82rem;color:var(--mute)}
 .month footer b{font-family:var(--num);font-size:1rem}
+.month .recap{margin:6px 16px 4px;font-size:.88rem;line-height:1.45;color:var(--ink,#1f2a37)}
+.month .mstats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:10px 0 8px}
+.month .mstats>div{background:#fff;padding:8px 16px;min-width:0}
+.month .mstats small{display:block;font-size:.7rem;color:var(--mute);text-transform:uppercase;letter-spacing:.4px}
+.month .mstats strong{display:block;font-family:var(--num);font-weight:700;font-size:1.15rem;line-height:1.2}
+.month .mstats span{display:block;font-size:.76rem;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.month .live{font-family:inherit;font-size:.62rem;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:#15803d;background:#e3f5ea;border-radius:4px;padding:1px 6px;vertical-align:3px;margin-left:4px}
 
 .lb header{padding:12px 16px;border-bottom:1px solid var(--line);font-family:var(--num);font-weight:700;font-size:1.15rem}
 .lb .row{display:grid;grid-template-columns:22px 1fr auto 72px;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line-2)}
@@ -702,8 +710,8 @@ const LOG = [
   { d:'2026-11-15', p:'Macklin Celebrini', b:'Bet365',     o:221, fv:147, ev:3.1, r:'W', note:'boosted' },
   { d:'2026-11-15', p:'Cutter Gauthier',   b:'MGM',        o:115, fv:111, ev:2.0, r:'W' },
   { d:'2026-11-15', p:'Ivar Stenberg',     b:'MGM',        o:340, fv:332, ev:2.0, r:'W' },
-  { d:'2026-11-15', p:'Beckett Sennecke',  b:'Novig',      o:182, fv:182, ev:0.0, r:'W' },
-  { d:'2026-11-15', p:'Jason Robertson',   b:'DraftKings', o:165, fv:165, ev:0.0, r:'W' },
+  { d:'2026-11-15', p:'Beckett Sennecke',  b:'Novig',      o:182, r:'W' },
+  { d:'2026-11-15', p:'Jason Robertson',   b:'DraftKings', o:165, r:'W' },
 ];
 
 // Free bet adjustments (negative numbers), dated to the month they belong in.
@@ -836,13 +844,16 @@ function calendarSVG(series, startStr) {
     const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
     if (d.getMonth() !== lastMonth) {
       lastMonth = d.getMonth();
+      const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+      const stub = +d === +start && monthEnd - d < 6 * DAY;   // season opens in the last few days of a month: label the next month instead
       const lx = row > 3 ? x + cell + gap : x;   // month starting late in a week labels the next column
-      if (lx - lastLabelX >= 2 * (cell + gap)) { s += `<text x="${lx}" y="12" font-size="11" fill="#5b6b80" font-family="Barlow, system-ui, sans-serif">${MON[lastMonth]}</text>`; lastLabelX = lx; }
+      if (!stub && lx - lastLabelX >= 2 * (cell + gap)) { s += `<text x="${lx}" y="12" font-size="11" fill="#5b6b80" font-family="Barlow, system-ui, sans-serif">${MON[lastMonth]}</text>`; lastLabelX = lx; }
     }
     const v = daily[key];
     s += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="${v === undefined ? '#edf1f6' : heat(v)}"><title>${shortDate(key)}: ${v === undefined ? 'no bets' : u(v)}</title></rect>`;
   }
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily profit and loss calendar">${s}</svg>`;
+  // Natural size scaled 1.35x at most (about 22px squares), never squeezed below 0.75x (about 12px); the scroller takes any overflow on phones.
+  return `<div class="cal-scroll"><svg viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W * 1.35)}px;min-width:${Math.round(W * 0.75)}px" role="img" aria-label="Daily profit and loss calendar">${s}</svg></div>`;
 }
 
 /* ── build models ── */
@@ -1023,15 +1034,49 @@ function renderSeason(el, m, o) {
   const maxAbs = Math.max(...m.books.map(b => Math.abs(b.pl)), 1);
   h += `<h3 class="sec">By book</h3><div class="card"><table class="t">
     <thead><tr><th>Book</th><th>Bets</th><th>Record</th><th class="hide-sm">Win rate</th><th class="hide-sm">ROI</th><th>P/L</th></tr></thead><tbody>` +
-    m.books.map(b => `<tr><td>${dot(b.name)}${b.name}</td><td>${b.n}</td><td>${rec(b)}</td><td class="hide-sm">${rate(b.w, b.w + b.l)}</td><td class="hide-sm ${cls(b.pl)}">${pct(b.pl, b.risked)}</td>
+    [...m.books].sort((a, b) => b.pl - a.pl).map(b => `<tr><td>${dot(b.name)}${b.name}</td><td>${b.n}</td><td>${rec(b)}</td><td class="hide-sm">${rate(b.w, b.w + b.l)}</td><td class="hide-sm ${cls(b.pl)}">${pct(b.pl, b.risked)}</td>
       <td class="${cls(b.pl)}"><span class="bar hide-sm" style="width:${Math.round(Math.abs(b.pl) / maxAbs * 70)}px;background:currentColor;opacity:.35"></span>${u(b.pl, '')}</td></tr>`).join('') +
     `</tbody></table></div>`;
 
-  h += `<h3 class="sec">By month</h3><div class="grid g3">` + m.months.map(mo => {
+  // Monthly recap, newest month first. Day stats come from the cumulative series, so the archive gets them too.
+  const daily = []; let prevC = 0;
+  m.series.forEach(([d, c]) => { daily.push({ d, pl: r2(c - prevC) }); prevC = c; });
+  const nowKey = TODAY.date.slice(0, 7);
+  h += `<h3 class="sec">Monthly recap</h3><div class="grid g3">` + [...m.months].reverse().map(mo => {
     const books = Object.entries(mo.books).sort((a, b) => b[1] - a[1]);
+    const days = daily.filter(x => x.d.startsWith(mo.key));
+    const byDay = [...days].sort((a, b) => b.pl - a.pl);
+    const best = byDay[0], worst = byDay[byDay.length - 1];
+    const up = days.filter(x => x.pl > 0).length;
+    const live = mo.key === nowKey && o.calStart === SEASON.start;
+    // Top earner and biggest hit need bet-level rows (current season only)
+    let top = null, hit = null;
+    if (m.bets) {
+      const mb = m.bets.filter(x => x.d.startsWith(mo.key)), pp = {};
+      mb.forEach(x => pp[x.p] = (pp[x.p] || 0) + x.pl);
+      const tp = Object.entries(pp).sort((a, b) => b[1] - a[1])[0];
+      if (tp && tp[1] > 0) top = { name: tp[0], pl: r2(tp[1]) };
+      const hb = [...mb].sort((a, b) => b.pl - a.pl)[0];
+      if (hb && hb.pl > 0) hit = hb;
+    }
+    const lead = books[0], lag = books[books.length - 1];
+    let line = `${live ? 'Month to date: ' : ''}${mo.net >= 0 ? 'Up' : 'Down'} ${Math.abs(mo.net).toFixed(2)}u over ${days.length} betting day${days.length === 1 ? '' : 's'}, ${up} of them winners.`;
+    if (lead && lead[1] > 0) line += ` ${lead[0]} led the books at ${u(lead[1])}${lag && lag[1] < 0 && lag !== lead ? `, ${lag[0]} lagged at ${u(lag[1])}` : ''}.`;
+    else if (lag && lag[1] < 0) line += ` Every book finished red; ${lag[0]} was the toughest at ${u(lag[1])}.`;
+    const stat = (k, v, sub, c) => `<div><small>${k}</small><strong class="${c || ''}">${v}</strong><span>${sub}</span></div>`;
+    const stats = [
+      best ? stat('Best day', u(best.pl), shortDate(best.d), cls(best.pl)) : '',
+      worst && days.length > 1 ? stat('Worst day', u(worst.pl), shortDate(worst.d), cls(worst.pl)) : '',
+      stat('Win rate', rate(mo.w, mo.w + mo.l), 'ROI ' + pct(mo.net, mo.risked), ''),
+      hit ? stat('Biggest hit', u(hit.pl), `${hit.p}, ${odds(hit.o)}`, 'pos')
+          : top ? stat('Top earner', u(top.pl), top.name, 'pos')
+          : stat('Winning days', up + ' of ' + days.length, 'Days in the green', ''),
+    ].join('');
     return `<div class="card month">
-      <header><b>${mo.label}</b><strong class="${cls(mo.net)}">${u(mo.net)}</strong></header>
-      <div class="rec">${mo.n} bets, ${rec(mo)}</div>
+      <header><b>${mo.label}${live ? ' <span class="live">In progress</span>' : ''}</b><strong class="${cls(mo.net)}">${u(mo.net)}</strong></header>
+      <div class="rec">${mo.n} bets, ${rec(mo)}${top && hit && top.name !== hit.p ? ` · Top earner ${top.name} ${u(top.pl)}` : ''}</div>
+      <p class="recap">${line}</p>
+      <div class="mstats">${stats}</div>
       ${books.map(([n, v]) => `<div class="row"><span>${dot(n)}${n}</span><span class="${cls(v)}">${u(v, '')}</span></div>`).join('')}
       <footer><span>Gross <b class="${cls(mo.gross)}">${u(mo.gross)}</b></span>${mo.fb ? `<span>Free bets <b class="neg">${u(mo.fb)}</b></span>` : ''}</footer>
     </div>`; }).join('') + `</div>`;
